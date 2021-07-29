@@ -7,7 +7,7 @@
 #include <QTime>
 #include "stopwatch.h"
 #include <QDate>
-
+#include "board.h"
 #include <QTimer>
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -48,6 +48,7 @@ private:
     QLabel *status = new QLabel(this);
     Stopwatch * watch;
     Ui::MainWindow *ui;
+    board * br=nullptr;
 
     //----------------------------------------------
 };

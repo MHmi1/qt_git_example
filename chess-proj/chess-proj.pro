@@ -19,12 +19,30 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    board.cpp \
+    cell.cpp \
     main.cpp \
     mainwindow.cpp \
+    pieces/bishop.cpp \
+    pieces/king.cpp \
+    pieces/knight.cpp \
+    pieces/pawn.cpp \
+    pieces/piece.cpp \
+    pieces/queen.cpp \
+    pieces/rook.cpp \
     stopwatch.cpp
 
 HEADERS += \
+    board.h \
+    cell.h \
     mainwindow.h \
+    pieces/Piece.h \
+    pieces/bishop.h \
+    pieces/king.h \
+    pieces/knight.h \
+    pieces/pawn.h \
+    pieces/queen.h \
+    pieces/rook.h \
     stopwatch.h
 
 FORMS += \

@@ -8,7 +8,7 @@
         <file>Black/b-rook.png</file>
     </qresource>
     <qresource prefix="/white">
-        <file>White/q-bishop.png</file>
+        <file>White/w-bishop.png</file>
         <file>White/w-king.png</file>
         <file>White/w-knight.png</file>
         <file>White/w-pawn.png</file>
@@ -24,5 +24,7 @@
         <file>Frame 8.png</file>
         <file>restart.png</file>
         <file>start.png</file>
+        <file>board.jpg</file>
+        <file>choice.png</file>
     </qresource>
 </RCC>
