@@ -1,6 +1,6 @@
 #include "Piece.h"
 #include <QDebug>
-Piece::Piece(Type t, Color c)
+Chessman::Chessman(Type t, Color c)
 {
     type = t;
     color = c;
@@ -25,28 +25,28 @@ Piece::Piece(Type t, Color c)
 }
 
 
-Color Piece::getColor() const
+Color Chessman::getColor() const
 {
     return color;
 }
 
-void Piece::setColor(Color color)
+void Chessman::setColor(Color color)
 {
-    Piece::color = color;
+    Chessman::color = color;
 }
 
-Type Piece::getType() const
+Type Chessman::getType() const
 {
     return type;
 }
 
-void Piece::setType(Type type)
+void Chessman::setType(Type type)
 {
-    Piece::type = type;
+    Chessman::type = type;
 }
 
-
-char Piece::typeToChar(Type type) const
+/*
+char Chessman::typeToChar(Type type) const
 {
     switch(type)
     {
@@ -60,7 +60,7 @@ char Piece::typeToChar(Type type) const
     }
 }
 
-char Piece::colorToChar(Color color) const
+char Chessman::colorToChar(Color color) const
 {
     switch(color)
     {
@@ -69,12 +69,13 @@ char Piece::colorToChar(Color color) const
         default: return ' ';
     }
 }
+*/
 
- void Piece::set_image(QString)
+ void Chessman::set_image(QString)
  {
      qDebug() <<"->error ! base function called ! "<<endl;
  }
-QString Piece::get_img(Color)
+QString Chessman::get_img()
 {
     qDebug() <<"->error ! base function called ! "<<endl;
 }

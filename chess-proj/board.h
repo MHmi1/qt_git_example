@@ -1,6 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
-#include "cell.h"
+//#include "cell.h"
 #include <QMainWindow>
 #include <QWidget>
 #include "pieces/Piece.h"
@@ -10,7 +10,7 @@
 #include "pieces/pawn.h"
 #include "pieces/queen.h"
 #include "pieces/rook.h"
-
+#include <QLabel>
 enum move_err
 {
     IMPOSSIBLE=1,
@@ -27,6 +27,7 @@ public:
     board(QWidget *parent = 0);
     ~board();
     void show_board(int,int);
+    void lab1click();
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -37,10 +38,16 @@ private:
          int gridH; //Grid width
          int startX; //The starting point of the board X
          int startY; //The starting point of the board Y
-         Cell * square[8][8]= {{nullptr}};
+         //Cell * square[8][8]= {{nullptr}};
+         QLabel lab[32];
 
         int chessX;
         int chessY; //board coordinates
+
+private slots:
+void mouse_cur_pos();
+void mouse_press();
+void mouse_left();
 };
 
 

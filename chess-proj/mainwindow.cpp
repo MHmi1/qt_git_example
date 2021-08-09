@@ -18,12 +18,29 @@
 #include <QElapsedTimer>
 #include <QRandomGenerator>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), watch(new Stopwatch())
 {
 
   ui->setupUi(this);
 
+ setStyleSheet("background-color:#cce1ff;");
+ setAutoFillBackground( true );
+
+  /*
+  connect(ui->board_label,SIGNAL(mouse_pos()),this,[=]()
+  { MainWindow::g("hami", "hami","hami"); });
+   connect(ui->board_label,SIGNAL(mouse_pres()),this,[=]()
+   { MainWindow::g("hami", "hami","hami"); });
+    connect(ui->board_label,SIGNAL(mouse_leftt()),this,[=]()
+    { MainWindow::g("hami", "hami","hami"); });
+*/
+/*
+  connect(ui->board_label,SIGNAL(mouse_pos()),SLOT(board::mouse_cur_pos()));
+   connect(ui->board_label,SIGNAL(mouse_pres()),SLOT(board::mouse_press()));
+    connect(ui->board_label,SIGNAL(mouse_leftt()),SLOT(board::mouse_left()));
+*/
   QObject::connect(ui->startStopButton, &QPushButton::clicked,
                    this, &MainWindow::startStopTimer);
   QObject::connect(ui->resetButton, &QPushButton::clicked,
@@ -36,11 +53,11 @@ MainWindow::MainWindow(QWidget *parent)
   QImage Image;
   Image.load(":/utility/board.png");
   QPixmap pixmap = QPixmap::fromImage(Image);
-  int with = ui->board_label->width();
-  int height = ui->board_label->height();
-  QPixmap fitpixmap = pixmap.scaled(with, height); // full fill
+ // int with = ui->board_label->width();
+ // int height = ui->board_label->height();
+ // QPixmap fitpixmap = pixmap.scaled(with, height); // full fill
                                                    // qpixmap fitpixmap = pixmap.scaled (with, height, qt :: keEpaspectratio, qt :: smoothtransformation); // Scalable
-  ui->board_label->setPixmap(fitpixmap);
+ // ui->board_label->setPixmap(fitpixmap);
 
   // qpixmap fitpixmap = pixmap.scaled (with, height, qt :: keEpaspectratio, qt :: smoothtransformation); // Scalable
 
@@ -81,8 +98,6 @@ void MainWindow::on_start_clicked()
 
   window->show();
 
-
-
   connect(button, &QPushButton::clicked, this, [=]()
           { MainWindow::g(p1_name->text(), p2_name->text(), game_name->text()); }); //lambda experssion
 }
@@ -90,7 +105,6 @@ void MainWindow::on_start_clicked()
 void MainWindow::g(QString a, QString b, QString c)
 {
   ui->game_label2->setText(c);
-
   ui->p1_negative->setText("0");
   ui->p1_positive->setText("0");
   ui->p2_negative->setText("0");
@@ -103,13 +117,15 @@ void MainWindow::g(QString a, QString b, QString c)
   {
       ui->p1_name->setText(a+"(white)");
       ui->p2_name->setText(b+"(black)");
+      watch->start();
   }
   else if (chance ==0)
   {
       ui->p1_name->setText(a+"(black)");
       ui->p2_name->setText(b+"(white)");
+       watch->start();
   }
-  watch->start();
+
 }
 
 void MainWindow::on_actionAbout_us_triggered()
@@ -121,7 +137,9 @@ void MainWindow::on_actionAbout_us_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
+
   window()->close();
+  exit(0);
 }
 
 //---------------------------------------

@@ -1,7 +1,10 @@
 QT       += core gui
 
+QT += core
 
 QT       += gui
+
+QT += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,6 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     board.cpp \
     cell.cpp \
+    game.cpp \
     main.cpp \
     mainwindow.cpp \
     pieces/bishop.cpp \
@@ -30,11 +34,13 @@ SOURCES += \
     pieces/piece.cpp \
     pieces/queen.cpp \
     pieces/rook.cpp \
-    stopwatch.cpp
+    stopwatch.cpp \
+    validation.cpp
 
 HEADERS += \
     board.h \
     cell.h \
+    game.h \
     mainwindow.h \
     pieces/Piece.h \
     pieces/bishop.h \
@@ -43,7 +49,8 @@ HEADERS += \
     pieces/pawn.h \
     pieces/queen.h \
     pieces/rook.h \
-    stopwatch.h
+    stopwatch.h \
+    validation.h
 
 FORMS += \
     mainwindow.ui
@@ -54,5 +61,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    img/images.qrc \
-    res.qrc
+    img/img.qrc
+
+DISTFILES +=

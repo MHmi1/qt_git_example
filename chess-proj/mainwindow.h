@@ -18,6 +18,7 @@ QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
+    friend class board;
     Q_OBJECT
 
 public:

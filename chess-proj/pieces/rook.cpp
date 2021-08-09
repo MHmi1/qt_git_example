@@ -1,13 +1,140 @@
 #include "rook.h"
+extern Tile *tile[8][8];
+extern int exp[60],max,wR,wC;
 
-
-Rook::Rook(Color c) :Piece(ROOK,c)
+Rook::Rook(Color c) :Chessman(ROOK,c)
 {
 score = 8;
 }
-
-bool Rook::isValidMove() const
+int rook_threats=0;
+void Rook::cal_threat(const Tile * foe) const
 {
+
+    qDebug()<<"in rook::cal_threat "<<endl;
+    if  (foe->pieceName == 'Q')
+    {
+      rook_threats+=5;
+    }
+    else if  (foe->pieceName == 'H')
+    {
+        rook_threats+=2;
+    }
+   else if  (foe->pieceName == 'R')
+    {
+       rook_threats+=2;
+    }
+    else if  (foe->pieceName == 'B')
+     {
+          rook_threats+=2;
+     }
+    else if (foe->pieceName == 'P')
+    {
+         rook_threats+=1;
+    }
+
+}
+
+bool Rook::isValidMove(Tile * temp) const
+{
+    rook_threats=0;
+
+        int r, c;
+
+        bool retVal = 0;
+
+        r = temp->row;
+        c = temp->col;
+        while (r-- > 0 )
+        {
+            if (!tile[r][c]->piece)
+            {  //north movement
+                exp[max++] = tile[r][c]->tileNum;
+
+                retVal = 1;
+            }
+
+            else if (tile[r][c]->pieceColor == temp->pieceColor )
+
+                break;
+
+            else if (tile[r][c]->pieceColor != temp->pieceColor )
+            { //enemy in view of white peiece
+                exp[max++] = tile[r][c]->tileNum;
+                 this->cal_threat(tile[r][c]);
+                retVal = 1;
+                break;
+            }
+        }
+
+        r = temp->row;
+        c = temp->col;
+        while (r++ < 7 )
+        {
+            if (!tile[r][c]->piece)
+            {  //south movment
+                exp[max++] = tile[r][c]->tileNum;
+
+                retVal = 1;
+            }
+
+            else if (tile[r][c]->pieceColor == temp->pieceColor )
+                break;
+
+            else if (tile[r][c]->pieceColor != temp->pieceColor)
+            { //enemy in view of black peiece
+                exp[max++] = tile[r][c]->tileNum;
+                 this->cal_threat(tile[r][c]);
+                retVal = 1;
+                break;
+            }
+        }
+
+        r = temp->row;
+        c = temp->col;
+        while (c++ < 7)
+        {
+            if (!tile[r][c]->piece )
+            { //east movement
+                exp[max++] = tile[r][c]->tileNum;
+
+                retVal = 1;
+            }
+
+            else if (tile[r][c]->pieceColor == temp->pieceColor )
+                break;
+
+            else if (tile[r][c]->pieceColor != temp->pieceColor)
+            {  //???
+                exp[max++] = tile[r][c]->tileNum;
+                   this->cal_threat(tile[r][c]);
+                retVal = 1;
+                break;
+            }
+        }
+
+        r = temp->row;
+        c = temp->col;
+        while (c-- > 0 )
+        {
+            if (!tile[r][c]->piece )
+            {  //west movement
+                exp[max++] = tile[r][c]->tileNum;
+
+                retVal = 1;
+            }
+
+            else if (tile[r][c]->pieceColor == temp->pieceColor )
+                break;
+
+            else if (tile[r][c]->pieceColor != temp->pieceColor )
+            {  //???
+                exp[max++] = tile[r][c]->tileNum;
+                // this->cal_threat(tile[r][c]);
+                retVal = 1;
+                break;
+            }
+        }
+        return retVal;
 
 }
 
@@ -16,13 +143,14 @@ void Rook::set_image(QString address){
 img_addr = address;
 }
 
-QString Rook::get_img(Color c){
-if (c==BLACK)
+QString Rook::get_img(){
+if (color==BLACK)
 {
-    return ":/black/Black/b-rook.png";
+    return ":/black/Black/b-rook.svg";
 }
-else if (c == WHITE)
+else if (color == WHITE)
 {
-    return ":/white/White/w-rook.png";
+    return ":/white/White/w-rook.svg";
 }
+
 }

@@ -7,15 +7,23 @@
     <x>0</x>
     <y>0</y>
     <width>848</width>
-    <height>1033</height>
+    <height>750</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>MS Shell Dlg 2</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Advanced Chess</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="img/images.qrc">
+   <iconset>
     <normaloff>:/black/Black/b-queen.png</normaloff>:/black/Black/b-queen.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGroupBox" name="groupBox">
@@ -24,34 +32,18 @@
       <x>139</x>
       <y>-1</y>
       <width>531</width>
-      <height>591</height>
+      <height>601</height>
      </rect>
     </property>
     <property name="title">
      <string>board</string>
     </property>
-    <widget class="QLabel" name="board_label">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>501</width>
-       <height>561</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>580</y>
+      <x>0</x>
+      <y>600</y>
       <width>831</width>
       <height>101</height>
      </rect>
@@ -64,9 +56,15 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>151</width>
+       <width>161</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
      </property>
      <property name="text">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline; color:#ff007f;&quot;&gt;Black pieces lost: &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -77,9 +75,15 @@
       <rect>
        <x>10</x>
        <y>60</y>
-       <width>171</width>
+       <width>161</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
      </property>
      <property name="text">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline; color:#ff007f;&quot;&gt;White pieces lost:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -101,6 +105,12 @@
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QLabel" name="p1_name">
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
        <property name="text">
         <string>player 1: </string>
        </property>
@@ -151,6 +161,12 @@
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
       <widget class="QLabel" name="p2_name">
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
        <property name="text">
         <string>player 2: </string>
        </property>
@@ -201,6 +217,12 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QLabel" name="game_label">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; text-decoration: underline; color:#00aaff;&quot;&gt;Game Name:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
@@ -211,6 +233,12 @@
      </item>
      <item>
       <widget class="QLabel" name="game_label2">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
        <property name="text">
         <string>TextLabel</string>
        </property>
@@ -285,7 +313,7 @@ QToolTip{text-align:left;color:
       <x>670</x>
       <y>509</y>
       <width>171</width>
-      <height>81</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="title">
@@ -293,7 +321,7 @@ QToolTip{text-align:left;color:
     </property>
     <widget class="QTextEdit" name="secondsText">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -306,7 +334,7 @@ QToolTip{text-align:left;color:
     </widget>
     <widget class="QTextEdit" name="minutesText">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -334,7 +362,7 @@ QToolTip{text-align:left;color:
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>60</y>
        <width>51</width>
        <height>31</height>
       </rect>
@@ -345,7 +373,7 @@ QToolTip{text-align:left;color:
     </widget>
     <widget class="QTextEdit" name="hundredthsText">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -395,9 +423,7 @@ QToolTip{text-align:left;color:
    </property>
   </action>
  </widget>
- <resources>
-  <include location="img/images.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>exit_btn</sender>

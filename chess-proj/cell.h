@@ -1,29 +1,29 @@
-#ifndef CELL_H
-#define CELL_H
-#include <QString>
-#include "pieces/Piece.h"
-#include <memory>
+#ifndef TILE_H
+#define TILE_H
+#include <QLabel>
+#include <QDebug>
 
-
-class Cell
+class Tile: public QLabel
 {
-private:
-    QString id;
-    bool full;
-    /*std::unique_ptr<Piece * >*/
 
 public:
-     Piece * getPiece();
-  void setPiece(std::unique_ptr<Piece> piece);
-    void set_id(QString);
-    QString get_id();
-    bool isfull();
 
-    Cell();
-    ~Cell();
-    std::unique_ptr<Piece> p;
-protected:
+    //Fields
+    int tileColor,piece,pieceColor,row,col,tileNum;
+    char pieceName;
+    QString cordinate;
+
+    //Constructors
+    Tile(QWidget* pParent=0, Qt::WindowFlags f=0) : QLabel(pParent, f) {};
+    Tile(const QString& text, QWidget* pParent = 0, Qt::WindowFlags f = 0) : QLabel(text, pParent, f){};
+
+    //Methods
+    void mousePressEvent(QMouseEvent *event);
+    void display(char elem);
+    void tileDisplay();
+    QString get_cord() const;
+
 
 };
 
-#endif // CELL_H
+#endif // TILE_H

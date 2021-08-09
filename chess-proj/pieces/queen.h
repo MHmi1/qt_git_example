@@ -2,14 +2,15 @@
 #define QUEEN_H
 #include "Piece.h"
 
-class Queen : public Piece
+class Queen : public Chessman
 {
     public:
     Queen(Color);
-    virtual bool isValidMove(/*const Board *board, const std::pair<int, int> &fromCoords, const std::pair<int, int> &toCoords*/) const override;
+    virtual bool isValidMove(Tile *) const override;
     ~Queen() override = default;
     virtual void set_image(QString) override;
-    virtual QString get_img(Color) override;
+    virtual QString get_img() override;
+    virtual void cal_threat(const Tile *)const override;
 };
 
 #endif // QUEEN_H
