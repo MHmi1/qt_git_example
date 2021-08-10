@@ -18,7 +18,6 @@ enum Color
     WHITE,
     BLACK
 };
-
 class Chessman
 {
 public:
@@ -32,7 +31,6 @@ public:
    virtual QString get_img();
     virtual bool isValidMove(Tile *) const = 0;
     virtual void cal_threat(const Tile *) const=0;
-
     // Destructor
     virtual ~Chessman() = default;
 protected:
@@ -41,9 +39,5 @@ protected:
     Color color;
     Type type;
     int moves;
-   // char typeToChar(Type type) const;
-   // char colorToChar(Color color) const;
-   // vector<QString> movelist;
 };
-
 #endif // PIECE_H

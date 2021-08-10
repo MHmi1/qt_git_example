@@ -35,6 +35,7 @@ SOURCES += \
     pieces/queen.cpp \
     pieces/rook.cpp \
     stopwatch.cpp \
+    utility.cpp \
     validation.cpp
 
 HEADERS += \

@@ -11,7 +11,7 @@ public:
     //Fields
     int tileColor,piece,pieceColor,row,col,tileNum;
     char pieceName;
-    QString cordinate;
+    QString coordinate;
 
     //Constructors
     Tile(QWidget* pParent=0, Qt::WindowFlags f=0) : QLabel(pParent, f) {};
@@ -21,7 +21,7 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void display(char elem);
     void tileDisplay();
-    QString get_cord() const;
+    QString get_coord() const;
 
 
 };

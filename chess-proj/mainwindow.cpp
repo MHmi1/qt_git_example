@@ -1,14 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "QImage"
 #include <QPixmap>
 #include <QWidget>
 #include <QMessageBox>
 #include <QLineEdit>
-#include <QtGui>
 #include <QLabel>
 #include <QtCore>
-#include <QGraphicsScene>
 #include <QtWidgets>
 #include <QTime>
 #include <QDate>
@@ -17,7 +14,9 @@
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QRandomGenerator>
+#include <cell.h>
 
+extern void game_start(int  flag);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), watch(new Stopwatch())
@@ -25,22 +24,9 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->setupUi(this);
 
- setStyleSheet("background-color:#cce1ff;");
+ setStyleSheet("background-color:#ffffff;");
  setAutoFillBackground( true );
 
-  /*
-  connect(ui->board_label,SIGNAL(mouse_pos()),this,[=]()
-  { MainWindow::g("hami", "hami","hami"); });
-   connect(ui->board_label,SIGNAL(mouse_pres()),this,[=]()
-   { MainWindow::g("hami", "hami","hami"); });
-    connect(ui->board_label,SIGNAL(mouse_leftt()),this,[=]()
-    { MainWindow::g("hami", "hami","hami"); });
-*/
-/*
-  connect(ui->board_label,SIGNAL(mouse_pos()),SLOT(board::mouse_cur_pos()));
-   connect(ui->board_label,SIGNAL(mouse_pres()),SLOT(board::mouse_press()));
-    connect(ui->board_label,SIGNAL(mouse_leftt()),SLOT(board::mouse_left()));
-*/
   QObject::connect(ui->startStopButton, &QPushButton::clicked,
                    this, &MainWindow::startStopTimer);
   QObject::connect(ui->resetButton, &QPushButton::clicked,
@@ -55,10 +41,8 @@ MainWindow::MainWindow(QWidget *parent)
   QPixmap pixmap = QPixmap::fromImage(Image);
  // int with = ui->board_label->width();
  // int height = ui->board_label->height();
- // QPixmap fitpixmap = pixmap.scaled(with, height); // full fill
-                                                   // qpixmap fitpixmap = pixmap.scaled (with, height, qt :: keEpaspectratio, qt :: smoothtransformation); // Scalable
+ // QPixmap fitpixmap = pixmap.scaled(with, height); // full fill                                               // qpixmap fitpixmap = pixmap.scaled (with, height, qt :: keEpaspectratio, qt :: smoothtransformation); // Scalable
  // ui->board_label->setPixmap(fitpixmap);
-
   // qpixmap fitpixmap = pixmap.scaled (with, height, qt :: keEpaspectratio, qt :: smoothtransformation); // Scalable
 
   QLabel *status = new QLabel(this);
@@ -99,11 +83,14 @@ void MainWindow::on_start_clicked()
   window->show();
 
   connect(button, &QPushButton::clicked, this, [=]()
-          { MainWindow::g(p1_name->text(), p2_name->text(), game_name->text()); }); //lambda experssion
+          { MainWindow::g(p1_name->text(), p2_name->text(), game_name->text()); window->close();}); //lambda experssion
+
 }
 
 void MainWindow::g(QString a, QString b, QString c)
 {
+
+   game_start(1);
   ui->game_label2->setText(c);
   ui->p1_negative->setText("0");
   ui->p1_positive->setText("0");
@@ -112,7 +99,6 @@ void MainWindow::g(QString a, QString b, QString c)
   status->setText(" ->Status : game is running ");
   ui->statusbar->addWidget(status);
   int chance = QRandomGenerator::global()->bounded(0,2);
- qDebug()<< chance<<endl;
   if (chance ==1)
   {
       ui->p1_name->setText(a+"(white)");
@@ -125,6 +111,7 @@ void MainWindow::g(QString a, QString b, QString c)
       ui->p2_name->setText(b+"(white)");
        watch->start();
   }
+
 
 }
 
@@ -212,5 +199,9 @@ void MainWindow::update()
 
 void MainWindow::on_dispen_btn_clicked()
 {
-  watch->pause();
+   // int total_p1 = ui->p1_positive->text().toInt() +  ui->p1_negative->text().toInt();
+   // int total_p2 = ui->p2_positive->text().toInt() +  ui->p2_negative->text().toInt();
+    watch->pause();
+    game_start(0);
+
 }

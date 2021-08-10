@@ -4,12 +4,18 @@
 #include <QGridLayout>
 #include "cell.h"
 #include <string>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QTableWidget>
+extern void delay(int millisecondsToWait);
 
 int count = 0, turn = 1, exp[60], max = 0;
 int wR, wC, bR, bC;
 Tile *click1;
 Tile *tile[8][8] = {{NULL}};
 
+extern QVector<QString> b_move_list;
+extern QVector<QString> w_move_list;
 class Border
 {
 public:
@@ -27,14 +33,6 @@ public:
         outLabel->setStyleSheet("QLabel { background-color :rgb(170, 170, 127); color : black; }");
     }
 };
-
-void accessories(QWidget *baseWidget)
-{
-
-    QLabel *moves = new QLabel(baseWidget);
-    moves->setGeometry(1000, 105, 250, 550);
-    moves->setStyleSheet("QLabel {background-color: white;}");
-}
 
 void chessBoard(QWidget *baseWidget, Tile *tile[8][8])
 {
@@ -118,7 +116,7 @@ void chessBoard(QWidget *baseWidget, Tile *tile[8][8])
     }
 
     //----------------------------------------
-    char ch=0;
+    char ch = 0;
 
     for (int i = 0; i < 8; i++)
     {
@@ -161,8 +159,8 @@ void chessBoard(QWidget *baseWidget, Tile *tile[8][8])
                 break;
             }
 
-            std::string str = std::to_string(8-i);
-            tile[i][j]->cordinate = QString(ch) + QString(str.c_str());
+            std::string str = std::to_string(8 - i);
+            tile[i][j]->coordinate = QString(ch) + QString(str.c_str());
         }
     }
     //-----------------------------------------
@@ -173,19 +171,69 @@ void chessBoard(QWidget *baseWidget, Tile *tile[8][8])
     bC = 4;
 }
 
+void accessories(QWidget *baseWidget)
+{
+    //QLabel *moves = new QLabel(baseWidget);
+    //moves->setGeometry(1000, 105, 250, 550);
+   // moves->setStyleSheet("QLabel {background-color: white;}");
+}
+
+void game_start(int  flag)
+{
+
+    QWidget *myWidget = new QWidget();
+
+    if (flag==1) //start game
+    {
+        myWidget->setGeometry(0, 0, 1370, 700);
+        accessories(myWidget);
+        chessBoard(myWidget, tile);
+        myWidget->show();
+    }
+
+    if (flag == 0   ) //game canceled and exit
+    {
+        QMessageBox msgBox;
+        QString win_msg, msg1;
+        win_msg = (turn ? "BLACK" : "WHITE");
+        msg1 = (turn ? "WHITE" : "BLACK");
+
+        msgBox.setText(msg1 + "  Player have canceled the game ...");
+
+        msgBox.setInformativeText(" The winner is the  " + win_msg + " player !");
+
+        QPushButton *okbtn = msgBox.addButton(QMessageBox::Ok);
+       // if (myWidget->isActiveWindow() ==1 )
+        //{
+        msgBox.show();
+        if (msgBox.clickedButton() == okbtn)
+        {
+
+            myWidget->close();
+
+            exit(0);
+        }
+        else if (msgBox.clickedButton() != okbtn)
+        {
+            delay(8000);
+            myWidget->close();
+
+            exit(0);
+        }
+    }
+   // }
+}
+
 int main(int argc, char *argv[])
 {
 
     QApplication a(argc, argv);
 
-    QWidget *myWidget = new QWidget();
-    myWidget->setGeometry(0, 0, 1370, 700);
+    MainWindow w;
 
-    accessories(myWidget);
-    chessBoard(myWidget, tile);
+    w.show();
 
-    myWidget->show();
-/*
+    /*
     for (int i=0;i<8;i++)
     {
         for (int j=0;j<8;j++)
@@ -196,27 +244,4 @@ int main(int argc, char *argv[])
     }
 */
     return a.exec();
-
-    /*
-    MainWindow w;
-  w.show();
-   board www;
-
-   int x=720;
-   int y=720;
-   www.setFixedSize(x,y);
-
-   QGridLayout *Layout = new QGridLayout;
-   QImage Image;
-   Image.load(":/white/White/w-rook.png");
-   QPixmap pixmap = QPixmap::fromImage(Image);
-   QPixmap fitpixmap = pixmap.scaled(90, 90);
-
-          // setPixmap(fitpixmap);
-
-   www.show();
-
-*/
 }
-
-

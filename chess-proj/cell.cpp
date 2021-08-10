@@ -9,13 +9,14 @@
 //#include <QSoundEffect>
 #include <QMediaPlayer>
 #include <QFile>
-extern int bishop_threats, queen_threats, king_threats, pawn_threats, knight_threats, rook_threats; //variables for calculate threating other pieces
+#include <QStatusBar>
 
+extern int bishop_threats, queen_threats, king_threats, pawn_threats, knight_threats, rook_threats; //variables for calculate threating other pieces
 validation *valid = new validation();
-QVector<QString> b_move_list; // container to store balck movements
-QVector<QString> w_move_list; // container to store white movements
-vector<char> lost_white;      // container to store white lost pieces
-vector<char> lost_black;      // container to store balck lost pieces
+QVector<QString> b_move_list;              // container to store balck movements
+QVector<QString> w_move_list;               // container to store white movements
+std::list<char> lost_white;                    // container to store white lost pieces
+std::list<char> lost_black;                   // container to store balck lost pieces
 QVector<QString> w_existing_piece;
 QVector<QString> b_existing_piece;
 
@@ -31,8 +32,9 @@ void disOrange();
 //-----------------------------------------------
 extern int is_w1_anpasan, is_w2_anpasan;
 extern int is_b1_anpasan, is_b2_anpasan;
+extern double SqrtNumber(double num) ;
 void update_exist_piece();                     //update list of existing piece of each player
-std::map<int, int> change_cord(QString coord); //change chess cordination to x,y(or row,col)
+std::map<int, int> change_coord(QString coord); //change chess coordination to x,y(or row,col)
 void threat_foe();                             // check the foe threat has been realized
 bool hit_foe(const Tile *);                    // check attaking for calculate it's score
 void just_check();                             // check out for checking in chess
@@ -49,35 +51,6 @@ size_t path_len(QString move);                 //calculate the lenth of each mov
 int choose_cnt = 0;                            // counter for counting clicks
 //----------------------------------------------------
 
-double SqrtNumber(double num)  //function for calculate square root of number
-    {
-             double lower_bound=0;
-             double upper_bound=num;
-             double temp=0;                    /* ek edited this line */
-
-             int nCount = 50;
-
-        while(nCount != 0)
-        {
-               temp=(lower_bound+upper_bound)/2;
-               if(temp*temp==num)
-               {
-                       return temp;
-               }
-               else if(temp*temp > num)
-
-               {
-                       upper_bound = temp;
-               }
-               else
-               {
-                       lower_bound = temp;
-               }
-        nCount--;
-     }
-        return temp;
-     }
-
 void Tile::mousePressEvent(QMouseEvent *event)
 {
     validate(this, ++count);
@@ -85,8 +58,8 @@ void Tile::mousePressEvent(QMouseEvent *event)
 
 size_t path_len(QString move)
 {
-    std::map<int, int> point1 = change_cord(move.fromStdString(move.toStdString().substr(1, 2)));
-    std::map<int, int> point2 = change_cord(move.fromStdString(move.toStdString().substr(3, 2)));
+    std::map<int, int> point1 = change_coord(move.fromStdString(move.toStdString().substr(1, 2)));
+    std::map<int, int> point2 = change_coord(move.fromStdString(move.toStdString().substr(3, 2)));
     auto p1 = point1.begin();
     auto p2 = point2.begin();
 
@@ -217,7 +190,6 @@ void Tile::display(char elem)
 
 void validate(Tile *temp, int c)
 {
-
     int retValue, i;
 
     if (c == 1)
@@ -231,7 +203,7 @@ void validate(Tile *temp, int c)
             if (retValue == 1)
             {
                 click1 = new Tile();
-                temp->setStyleSheet("QLabel {background-color: #0bc51d;}"); //green
+                temp->setStyleSheet("QLabel {background-color: #0bc51d;}");
                 click1 = temp;
                 choose_cnt++;
             }
@@ -278,7 +250,7 @@ void validate(Tile *temp, int c)
 
                 retValue = valid->check(click1);
 
-                QString move = QString(temp->pieceName) + click1->get_cord() + temp->get_cord();
+                QString move = QString(temp->pieceName) + click1->get_coord() + temp->get_coord();
 
                 if (temp->pieceColor == 1)
                 {
@@ -442,7 +414,7 @@ void castling(const QString &mov, int color)
 {
     if (mov.at(0) == 'K' && mov.toStdString().substr(1, 2) == "e1" && mov.toStdString().substr(3, 2) == "c1")
     {
-        std::map<int, int> tempp = change_cord("d1");
+        std::map<int, int> tempp = change_coord("d1");
         auto ite = tempp.begin();
         // tile[7][0]->piece = 0;
         //tile[7][0]->clear();
@@ -455,7 +427,7 @@ void castling(const QString &mov, int color)
     }
     if (mov.at(0) == 'K' && mov.toStdString().substr(1, 2) == "e1" && mov.toStdString().substr(3, 2) == "g1")
     {
-        std::map<int, int> tempp = change_cord("f1");
+        std::map<int, int> tempp = change_coord("f1");
         auto ite = tempp.begin();
         // tile[7][7]->piece = 0;
         // tile[7][7]->piece = 1;
@@ -471,7 +443,7 @@ void castling(const QString &mov, int color)
 
     if (mov.at(0) == 'K' && mov.toStdString().substr(1, 2) == "e8" && mov.toStdString().substr(3, 2) == "g8")
     { //black king east castling
-        std::map<int, int> tempp = change_cord("f8");
+        std::map<int, int> tempp = change_coord("f8");
         auto ite = tempp.begin();
         //tile[0][7]->piece = 0;
         //tile[0][7]->clear();
@@ -485,7 +457,7 @@ void castling(const QString &mov, int color)
 
     if (mov.at(0) == 'K' && mov.toStdString().substr(1, 2) == "e8" && mov.toStdString().substr(3, 2) == "c8")
     { //black king west castling
-        std::map<int, int> tempp = change_cord("d8");
+        std::map<int, int> tempp = change_coord("d8");
         auto ite = tempp.begin();
         // tile[0][0]->piece = 0;
         //tile[0][0]->clear();
@@ -498,9 +470,9 @@ void castling(const QString &mov, int color)
     }
 }
 
-QString Tile::get_cord() const
+QString Tile::get_coord() const
 {
-    return cordinate;
+    return coordinate;
 }
 
 void disOrange()
@@ -531,24 +503,19 @@ void Duplicate_move(int color)
 
 void soldier_sec_half(const Tile *t)
 {
-    if ((t->pieceColor == 1) && (t->pieceName == 'P') && (t->cordinate == "a5" || t->cordinate == "b5" || t->cordinate == "c5" || t->cordinate == "d5" || t->cordinate == "e5" || t->cordinate == "f5" || t->cordinate == "g5" || t->cordinate == "h5"))
+    if ((t->pieceColor == 1) && (t->pieceName == 'P') && (t->coordinate == "a5" || t->coordinate == "b5" || t->coordinate == "c5" || t->coordinate == "d5" || t->coordinate == "e5" || t->coordinate == "f5" || t->coordinate == "g5" || t->coordinate == "h5"))
     {
-        //tile[3][0]->pieceName =='P' || tile[3][1]->pieceName =='P' || tile[3][2]->pieceName =='P' || tile[3][3]->pieceName =='P' || tile[3][4]->pieceName =='P' || tile[3][5]->pieceName =='P' ||tile[3][6]->pieceName =='P' || tile[3][7]->pieceName =='P'))
         qDebug() << "3 pos score for white (sec half)" << endl;
     }
-    if ((t->pieceColor == 0) && (t->pieceName == 'P') && (t->cordinate == "a4" || t->cordinate == "b4" || t->cordinate == "c4" || t->cordinate == "d4" || t->cordinate == "e4" || t->cordinate == "f4" || t->cordinate == "g4" || t->cordinate == "h4"))
+    if ((t->pieceColor == 0) && (t->pieceName == 'P') && (t->coordinate == "a4" || t->coordinate == "b4" || t->coordinate == "c4" || t->coordinate == "d4" || t->coordinate == "e4" || t->coordinate == "f4" || t->coordinate == "g4" || t->coordinate == "h4"))
     {
-        qDebug() << "3 pos score for black (sec half)" << endl;
-        // QMediaPlayer *music = new QMediaPlayer();
-        // music->setMedia(QUrl("qrc:/utility/123.mp3"));
-        // music->setVolume(85);
-        // music->play();
+        qDebug() << "3 pos score for black (sec half)" << endl;     
     }
 }
 
 void end_soldier(Tile *t)
 {
-    if ((t->pieceColor == 1) && (t->pieceName == 'P') && (t->cordinate == "a8" || t->cordinate == "b8" || t->cordinate == "c8" || t->cordinate == "d8" || t->cordinate == "e8" || t->cordinate == "f8" || t->cordinate == "g8" || t->cordinate == "h8"))
+    if ((t->pieceColor == 1) && (t->pieceName == 'P') && (t->coordinate == "a8" || t->coordinate == "b8" || t->coordinate == "c8" || t->coordinate == "d8" || t->coordinate == "e8" || t->coordinate == "f8" || t->coordinate == "g8" || t->coordinate == "h8"))
     {
         qDebug() << " white solier is at the end , choss a new piece !" << endl;
         //if (lost_white.size() > 1)
@@ -561,7 +528,7 @@ void end_soldier(Tile *t)
        // }
     }
 
-    if ((t->pieceColor == 0) && (t->pieceName == 'P') && (t->cordinate == "a1" || t->cordinate == "b1" || t->cordinate == "c1" || t->cordinate == "d1" || t->cordinate == "e1" || t->cordinate == "f1" || t->cordinate == "g1" || t->cordinate == "h1"))
+    if ((t->pieceColor == 0) && (t->pieceName == 'P') && (t->coordinate == "a1" || t->coordinate == "b1" || t->coordinate == "c1" || t->coordinate == "d1" || t->coordinate == "e1" || t->coordinate == "f1" || t->coordinate == "g1" || t->coordinate == "h1"))
     {
         qDebug() << "black solier is at the end , choose a new piece !" << endl;
         //if (lost_black.size() > 1)
@@ -669,7 +636,7 @@ void update_exist_piece()
         {
             if (tile[i][j]->piece && tile[i][j]->pieceColor == 1)
             {
-                w_existing_piece.push_back(tile[i][j]->pieceName + tile[i][j]->get_cord());
+                w_existing_piece.push_back(tile[i][j]->pieceName + tile[i][j]->get_coord());
             }
         }
     }
@@ -681,7 +648,7 @@ void update_exist_piece()
         {
             if (tile[i][j]->piece && tile[i][j]->pieceColor == 0)
             {
-                b_existing_piece.push_back(tile[i][j]->pieceName + tile[i][j]->get_cord());
+                b_existing_piece.push_back(tile[i][j]->pieceName + tile[i][j]->get_coord());
             }
         }
     }
@@ -705,7 +672,6 @@ QString white_rand_move()
 {
     srand(static_cast<unsigned int>(time(NULL)));
     update_exist_piece();
-
     int randomNumber;
     randomNumber = (rand() % w_existing_piece.size()) + 1;
     return w_existing_piece.at(randomNumber);
@@ -713,9 +679,10 @@ QString white_rand_move()
 
 bool dual_move()
 {
+
 }
 
-std::map<int, int> change_cord(QString coord)
+std::map<int, int> change_coord(QString coord)
 {
     int ch;
 
@@ -777,7 +744,7 @@ std::map<int, int> change_cord(QString coord)
 
 bool hit_foe(const Tile *temp)
 {
-    std::map<int, int> t = change_cord(temp->get_cord());
+    std::map<int, int> t = change_coord(temp->get_coord());
     int score = 0;
     switch (temp->pieceName)
     {
@@ -800,7 +767,6 @@ bool hit_foe(const Tile *temp)
         score = 0;
         break;
     }
-
     for (const auto &ite : t)
     {
         if (tile[ite.first][ite.second]->piece && temp->pieceColor == 1)
@@ -817,6 +783,5 @@ bool hit_foe(const Tile *temp)
             return true;
         }
     }
-
     return false;
 }

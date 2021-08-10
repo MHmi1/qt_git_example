@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>848</width>
-    <height>750</height>
+    <width>861</width>
+    <height>761</height>
    </rect>
   </property>
   <property name="font">
@@ -19,8 +19,8 @@
    <string>Advanced Chess</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/black/Black/b-queen.png</normaloff>:/black/Black/b-queen.png</iconset>
+   <iconset resource="img/img.qrc">
+    <normaloff>:/black/Black/b-queen.svg</normaloff>:/black/Black/b-queen.svg</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -32,7 +32,7 @@
       <x>139</x>
       <y>-1</y>
       <width>531</width>
-      <height>601</height>
+      <height>591</height>
      </rect>
     </property>
     <property name="title">
@@ -42,9 +42,9 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>600</y>
-      <width>831</width>
+      <width>821</width>
       <height>101</height>
      </rect>
     </property>
@@ -95,7 +95,7 @@
      <rect>
       <x>680</x>
       <y>10</y>
-      <width>151</width>
+      <width>171</width>
       <height>251</height>
      </rect>
     </property>
@@ -151,7 +151,7 @@
      <rect>
       <x>680</x>
       <y>260</y>
-      <width>151</width>
+      <width>171</width>
       <height>251</height>
      </rect>
     </property>
@@ -250,28 +250,28 @@
      <item>
       <widget class="QPushButton" name="start">
        <property name="text">
-        <string>start new game</string>
+        <string>Start New Game</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="redo_btn">
        <property name="text">
-        <string>redo</string>
+        <string>Redo</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="undo_btn">
        <property name="text">
-        <string>undo</string>
+        <string>Undo</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="dispen_btn">
        <property name="text">
-        <string>dispensing</string>
+        <string>Dispensing</string>
        </property>
       </widget>
      </item>
@@ -301,7 +301,7 @@ QToolTip{text-align:left;color:
 }</string>
        </property>
        <property name="text">
-        <string>exit</string>
+        <string>Exit</string>
        </property>
       </widget>
      </item>
@@ -310,8 +310,8 @@ QToolTip{text-align:left;color:
    <widget class="QGroupBox" name="groupBox_5">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>509</y>
+      <x>680</x>
+      <y>510</y>
       <width>171</width>
       <height>101</height>
      </rect>
@@ -391,7 +391,7 @@ QToolTip{text-align:left;color:
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>848</width>
+     <width>861</width>
      <height>17</height>
     </rect>
    </property>
@@ -423,7 +423,9 @@ QToolTip{text-align:left;color:
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="img/img.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>exit_btn</sender>
