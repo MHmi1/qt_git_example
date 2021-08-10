@@ -11,6 +11,9 @@
 #include <QFile>
 #include <QStatusBar>
 
+
+extern std::map<int, int> change_coord(QString coord);
+extern double SqrtNumber(double num);
 extern int bishop_threats, queen_threats, king_threats, pawn_threats, knight_threats, rook_threats; //variables for calculate threating other pieces
 validation *valid = new validation();
 QVector<QString> b_move_list;              // container to store balck movements
@@ -20,21 +23,22 @@ std::list<char> lost_black;                   // container to store balck lost p
 QVector<QString> w_existing_piece;
 QVector<QString> b_existing_piece;
 
-int bscore = 0, wscore = 0;
+extern bool is_dual_avctive;
 
 extern int count, turn;
 extern QWidget *myWidget;
 extern Tile *click1;     // refer to tile * pinter at main.cpp
 extern Tile *tile[8][8]; // refer to 2d tile array at main.cpp
 
+
 void validate(Tile *temp, int c);
 void disOrange();
 //-----------------------------------------------
 extern int is_w1_anpasan, is_w2_anpasan;
 extern int is_b1_anpasan, is_b2_anpasan;
-extern double SqrtNumber(double num) ;
+//extern double SqrtNumber(double num) ;
 void update_exist_piece();                     //update list of existing piece of each player
-std::map<int, int> change_coord(QString coord); //change chess coordination to x,y(or row,col)
+//std::map<int, int> change_coord(QString coord); change chess coordination to x,y(or row,col)
 void threat_foe();                             // check the foe threat has been realized
 bool hit_foe(const Tile *);                    // check attaking for calculate it's score
 void just_check();                             // check out for checking in chess
@@ -87,6 +91,7 @@ void del_piece(Tile *temp)
 
 void Tile::display(char elem)
 {
+
     this->pieceName = elem;
 
     if (this->pieceColor && this->piece)
@@ -249,6 +254,7 @@ void validate(Tile *temp, int c)
                 temp->tileDisplay();
 
                 retValue = valid->check(click1);
+                QMediaPlayer *music = new QMediaPlayer();
 
                 QString move = QString(temp->pieceName) + click1->get_coord() + temp->get_coord();
 
@@ -346,7 +352,10 @@ void validate(Tile *temp, int c)
                       {
                            total_threat+=king_threats;
                       }
-                       qDebug() <<total_threat <<"scores for threating white palyer !!"<<endl;
+
+                     // wscore[0]=total_threat;
+                      //wscore[1]=0;
+                       qDebug() <<total_threat <<"total scores for threating white palyer !!"<<endl;
                   }
 
 
@@ -377,21 +386,35 @@ void validate(Tile *temp, int c)
                       {
                            total_threat+=king_threats;
                       }
-                       qDebug() <<total_threat <<"scores for threating black palyer !!"<<endl;
+                       qDebug() <<total_threat <<"total scores for threating black palyer !!"<<endl;
+                     //bscore[0]=total_threat;
+                   //  bscore[1]=0;
+
                   }
-                  QMediaPlayer *music = new QMediaPlayer();
+
+
                            music->setMedia(QUrl("qrc:/utility/move.mp3"));
                            music->setVolume(85);
                          music->play();
 
-                //qDebug() << " queen_threats :" << queen_threats << endl;
-               // qDebug() << " bishop_threats :" << bishop_threats << endl;
-               // qDebug() << " rook_threats :" << rook_threats << endl;
-               // qDebug() << " knight_threats :" << knight_threats << endl;
-               // qDebug() << " pawn_threats :" << pawn_threats << endl;
-                //qDebug() << " king_threats :" << king_threats << endl;
+                qDebug() << " queen_threats :" << queen_threats << endl;
+                qDebug() << " bishop_threats :" << bishop_threats << endl;
+                qDebug() << " rook_threats :" << rook_threats << endl;
+                qDebug() << " knight_threats :" << knight_threats << endl;
+                qDebug() << " pawn_threats :" << pawn_threats << endl;
+                qDebug() << " king_threats :" << king_threats << endl;
 
-                turn = (turn + 1) % 2;
+                 if (is_dual_avctive == 1)
+                 {
+
+                     is_dual_avctive=0;
+                 }
+                 else
+                 {
+                   turn = (turn + 1) % 2;
+                   is_dual_avctive=0;
+                 }
+
                 count = 0;
                 choose_cnt = 0;
             }
@@ -682,65 +705,7 @@ bool dual_move()
 
 }
 
-std::map<int, int> change_coord(QString coord)
-{
-    int ch;
 
-    switch (coord.toStdString().at(0))
-    {
-    case 'a':
-    {
-        ch = 0;
-    }
-    break;
-
-    case 'b':
-    {
-        ch = 1;
-    }
-    break;
-
-    case 'c':
-    {
-        ch = 2;
-    }
-    break;
-
-    case 'd':
-    {
-        ch = 3;
-    }
-    break;
-
-    case 'e':
-    {
-        ch = 4;
-    }
-    break;
-
-    case 'f':
-    {
-        ch = 5;
-    }
-    break;
-
-    case 'g':
-    {
-        ch = 6;
-    }
-    break;
-
-    case 'h':
-    {
-        ch = 7;
-    }
-    break;
-    }
-    char y2 = (coord.toStdString().at(1));
-    int y = y2 - '0';
-    std::map<int, int> arr{{8 - y, ch}};
-    return arr;
-}
 
 bool hit_foe(const Tile *temp)
 {
@@ -784,4 +749,6 @@ bool hit_foe(const Tile *temp)
         }
     }
     return false;
+
+
 }

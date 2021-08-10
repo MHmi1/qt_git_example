@@ -29,7 +29,6 @@ void Knight::cal_threat(const Tile * foe) const
     {
            knight_threats+=1;
     }
-
 }
 
 bool Knight::isValidMove(Tile * temp) const

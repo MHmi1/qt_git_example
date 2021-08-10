@@ -19,12 +19,14 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     friend class board;
+    friend void Tile::display(char);
     Q_OBJECT
 
 public:
     MainWindow(QWidget *parent = nullptr);
     //std::string,std::string,std::string
     void g(QString,QString,QString);
+   void set_scores();
 
     ~MainWindow();
 
@@ -40,6 +42,10 @@ private slots:
 
     void on_dispen_btn_clicked();
 
+    void on_double_btn_clicked();
+
+    void on_undo_btn_clicked();
+
 public slots:
     void startStopTimer();
     void resetTimer();
@@ -48,8 +54,10 @@ public slots:
 private:
     QLabel *status = new QLabel(this);
     Stopwatch * watch;
-    Ui::MainWindow *ui;
+     Ui::MainWindow *ui;
     board * br=nullptr;
+protected:
+
 
     //----------------------------------------------
 };

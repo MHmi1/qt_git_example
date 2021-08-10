@@ -10,6 +10,7 @@ int bishop_threats=0;
 
 void Bishop::cal_threat(const Tile * foe) const
 {
+
     qDebug()<<"in Bishop::cal_threat "<<endl;
     if  (foe->pieceName == 'Q')
     {
@@ -32,7 +33,6 @@ void Bishop::cal_threat(const Tile * foe) const
            bishop_threats+=1;
     }
 }
-
  bool Bishop::isValidMove(Tile * temp) const
 {
       bishop_threats=0;
@@ -41,7 +41,7 @@ void Bishop::cal_threat(const Tile * foe) const
 
      r=temp->row;
      c=temp->col;
-     while(r-->0 && c++<7)
+     while(r-->0 && c++<7) //orib north-east movement
      {
          if(!tile[r][c]->piece )
          {
@@ -58,7 +58,7 @@ void Bishop::cal_threat(const Tile * foe) const
          else if(tile[r][c]->pieceColor!=temp->pieceColor)
          {
              exp[max++]=tile[r][c]->tileNum;
-             if (tile[r][c]->piece){this->cal_threat(tile[r][c]);}
+             if (tile[r][c]->piece /*&& r<=7 && c<=7 && c>=0 && r>=0*/){this->cal_threat(tile[r][c]);}
             //  qDebug()<<"there 3 "<<endl;
              retVal=1;
              break;
@@ -67,7 +67,7 @@ void Bishop::cal_threat(const Tile * foe) const
 
      r=temp->row;
      c=temp->col;
-     while(r-->0 && c-->0)
+     while(r-->0 && c-->0) //orib north-west movement
      {
          if(!tile[r][c]->piece)
          {
@@ -86,7 +86,7 @@ void Bishop::cal_threat(const Tile * foe) const
          {
              exp[max++]=tile[r][c]->tileNum;
 
-            if (tile[r][c]->piece){this->cal_threat(tile[r][c]);}
+            if (tile[r][c]->piece/*&& r<=7 && c<=7 && c>=0 && r>=0*/){this->cal_threat(tile[r][c]);}
              //qDebug()<<"there 6 "<<endl;
              retVal=1;
              break;
@@ -95,7 +95,7 @@ void Bishop::cal_threat(const Tile * foe) const
 
      r=temp->row;
      c=temp->col;
-     while(r++<7 && c++<7)
+     while(r++<7 && c++<7) //orib south-east movement
      {
          if(!tile[r][c]->piece )
          {
@@ -109,11 +109,10 @@ void Bishop::cal_threat(const Tile * foe) const
           //qDebug()<<"there 8 "<<endl;
             break;
          }
-
          else if(tile[r][c]->pieceColor!=temp->pieceColor)
          {
              exp[max++]=tile[r][c]->tileNum;
-             if (tile[r][c]->piece){this->cal_threat(tile[r][c]);}
+             if (tile[r][c]->piece/*&& r<=7 && c<=7 && c>=0 && r>=0*/){this->cal_threat(tile[r][c]);}
             // qDebug()<<"there 9 "<<endl;
              retVal=1;
              break;
@@ -122,7 +121,7 @@ void Bishop::cal_threat(const Tile * foe) const
 
      r=temp->row;
      c=temp->col;
-     while(r++<7 && c-->0)
+     while(r++<7 && c-->0) //orib south-west movement
      {
          if(!tile[r][c]->piece)
          {
@@ -140,7 +139,7 @@ void Bishop::cal_threat(const Tile * foe) const
          else if(tile[r][c]->pieceColor!=temp->pieceColor )
          {
              exp[max++]=tile[r][c]->tileNum;
-             if (tile[r][c]->piece){this->cal_threat(tile[r][c]);}
+             if (tile[r][c]->piece/*&& r<=7 && c<=7 && c>=0 && r>=0*/){this->cal_threat(tile[r][c]);}
              // qDebug()<<"there 12 "<<endl;
              retVal=1;
              break;

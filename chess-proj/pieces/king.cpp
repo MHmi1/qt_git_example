@@ -68,7 +68,7 @@ bool King::isValidMove(Tile * temp) const
         if (!tile[r - 1][c]->piece || tile[r - 1][c]->pieceColor != temp->pieceColor && tile[r - 1][c]->pieceName != 'K')
         {  // north movement
             exp[max++] = tile[r - 1][c]->tileNum;
-             this->cal_threat(tile[r-1][c]);
+             if (tile[r - 1][c]->pieceColor != temp->pieceColor){    this->cal_threat(tile[r-1][c]);}
             retVal = 1;
         }
     }
@@ -78,7 +78,7 @@ bool King::isValidMove(Tile * temp) const
         if (!tile[r + 1][c]->piece || tile[r + 1][c]->pieceColor != temp->pieceColor && tile[r + 1][c]->pieceName != 'K')
         { // south movement
             exp[max++] = tile[r + 1][c]->tileNum;
-              this->cal_threat(tile[r+1][c]);
+              if (tile[r + 1][c]->pieceColor != temp->pieceColor){ this->cal_threat(tile[r+1][c]);}
             retVal = 1;
         }
     }
@@ -88,7 +88,7 @@ bool King::isValidMove(Tile * temp) const
         if (!tile[r][c - 1]->piece || tile[r][c - 1]->pieceColor != temp->pieceColor && tile[r][c-1]->pieceName != 'K')
         { // west movement
             exp[max++] = tile[r][c - 1]->tileNum;
-           this->cal_threat(tile[r][c-1]);
+           if (tile[r ][c-1]->pieceColor != temp->pieceColor){ this->cal_threat(tile[r][c-1]);}
             retVal = 1;
         }
     }
@@ -132,7 +132,7 @@ bool King::isValidMove(Tile * temp) const
         if (!tile[r][c + 1]->piece || tile[r][c + 1]->pieceColor != temp->pieceColor && tile[r][c+1]->pieceName != 'K')
         { // east movement
             exp[max++] = tile[r][c + 1]->tileNum;
-            this->cal_threat(tile[r][c+1]);
+           if (tile[r ][c+1]->pieceColor != temp->pieceColor){  this->cal_threat(tile[r][c+1]);}
             retVal = 1;
         }
     }
@@ -142,7 +142,7 @@ bool King::isValidMove(Tile * temp) const
         if (!tile[r - 1][c - 1]->piece || tile[r - 1][c - 1]->pieceColor != temp->pieceColor && tile[r - 1][c-1]->pieceName != 'K')
         { //  north-west movment
             exp[max++] = tile[r - 1][c - 1]->tileNum;
-                 this->cal_threat(tile[r-1][c-1]);
+                if (tile[r - 1][c-1]->pieceColor != temp->pieceColor){  this->cal_threat(tile[r-1][c-1]);}
             retVal = 1;
         }
     }
@@ -152,7 +152,7 @@ bool King::isValidMove(Tile * temp) const
         if (!tile[r - 1][c + 1]->piece || tile[r - 1][c + 1]->pieceColor != temp->pieceColor && tile[r - 1][c+1]->pieceName != 'K')
         {  // north-esat movement
             exp[max++] = tile[r - 1][c + 1]->tileNum;
-            this->cal_threat(tile[r-1][c+1]);
+           if (tile[r - 1][c+1]->pieceColor != temp->pieceColor){  this->cal_threat(tile[r-1][c+1]);}
             retVal = 1;
         }
     }
@@ -162,7 +162,7 @@ bool King::isValidMove(Tile * temp) const
         if (!tile[r + 1][c - 1]->piece || tile[r + 1][c - 1]->pieceColor != temp->pieceColor && tile[r + 1][c-1]->pieceName != 'K')
         {   // south-west movement
             exp[max++] = tile[r + 1][c - 1]->tileNum;
-            this->cal_threat(tile[r+1][c-1]);
+            if (tile[r + 1][c-1]->pieceColor != temp->pieceColor){ this->cal_threat(tile[r+1][c-1]);}
 
             retVal = 1;
         }
@@ -173,7 +173,7 @@ bool King::isValidMove(Tile * temp) const
         if (!tile[r + 1][c + 1]->piece || tile[r + 1][c + 1]->pieceColor != temp->pieceColor && tile[r + 1][c + 1]->pieceName != 'K')
         { // south-east movement
             exp[max++] = tile[r + 1][c + 1]->tileNum;
-            this->cal_threat(tile[r+1][c+1]);
+            if (tile[r + 1][c+1]->pieceColor != temp->pieceColor){ this->cal_threat(tile[r+1][c+1]);}
             retVal = 1;
         }
     }

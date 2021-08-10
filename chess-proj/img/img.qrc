@@ -26,5 +26,6 @@
         <file>start.png</file>
         <file>move.mp3</file>
         <file>Error.wav</file>
+        <file>hit.wav</file>
     </qresource>
 </RCC>

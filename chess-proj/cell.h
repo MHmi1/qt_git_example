@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QDebug>
 
+
 class Tile: public QLabel
 {
 

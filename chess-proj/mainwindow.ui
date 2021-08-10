@@ -112,7 +112,7 @@
         <enum>QFrame::Raised</enum>
        </property>
        <property name="text">
-        <string>player 1: </string>
+        <string>player 1: (black)</string>
        </property>
       </widget>
      </item>
@@ -168,7 +168,7 @@
         <enum>QFrame::Raised</enum>
        </property>
        <property name="text">
-        <string>player 2: </string>
+        <string>player 2: (white)</string>
        </property>
       </widget>
      </item>
@@ -256,6 +256,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="redo_btn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Redo</string>
        </property>
@@ -263,6 +266,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="undo_btn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Undo</string>
        </property>
@@ -270,6 +276,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="dispen_btn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Dispensing</string>
        </property>
@@ -277,8 +286,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="double_btn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
-        <string>double move</string>
+        <string>doual move</string>
        </property>
       </widget>
      </item>

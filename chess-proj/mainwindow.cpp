@@ -15,8 +15,19 @@
 #include <QElapsedTimer>
 #include <QRandomGenerator>
 #include <cell.h>
+#include <string>
+#include <QVector>
 
+extern std::map<int, int> change_coord(QString coord);
+extern Tile *tile[8][8];
+bool is_dual_avctive=0;
+extern std::array<int,2> bscore;
+extern std::array<int,2> wscore;
+extern const QVector<QString> b_move_list;              // container to store balck movements
+extern const QVector<QString> w_move_list;
 extern void game_start(int  flag);
+extern int turn;
+extern void del_piece(Tile *temp);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), watch(new Stopwatch())
@@ -103,15 +114,21 @@ void MainWindow::g(QString a, QString b, QString c)
   {
       ui->p1_name->setText(a+"(white)");
       ui->p2_name->setText(b+"(black)");
+
       watch->start();
   }
   else if (chance ==0)
   {
       ui->p1_name->setText(a+"(black)");
       ui->p2_name->setText(b+"(white)");
+
        watch->start();
   }
 
+  ui->redo_btn->setEnabled(1);
+  ui->double_btn->setEnabled(1);
+  ui->undo_btn->setEnabled(1);
+  ui->dispen_btn->setEnabled(1);
 
 }
 
@@ -203,5 +220,59 @@ void MainWindow::on_dispen_btn_clicked()
    // int total_p2 = ui->p2_positive->text().toInt() +  ui->p2_negative->text().toInt();
     watch->pause();
     game_start(0);
+
+}
+
+
+void MainWindow::on_double_btn_clicked()
+{
+    is_dual_avctive=1;
+    if (turn==0)
+    {
+        int a= ui->p2_negative->text().toInt()-30;
+        ui->p2_negative->setText(QString::number(a));
+
+    }
+    if (turn==1)
+    {
+        int a= ui->p1_negative->text().toInt()-30;
+        ui->p1_negative->setText(QString::number(a));
+
+    }
+}
+
+void MainWindow::on_undo_btn_clicked()
+{
+    if (turn==1 && b_move_list.size()>0)
+    {
+     auto dest_pos =change_coord(QString::fromStdString(b_move_list.at(b_move_list.size()-1).toStdString().substr(3,2))).begin();
+        del_piece(tile[dest_pos->first][dest_pos->second]);
+
+        auto origin_pos =change_coord(QString::fromStdString(b_move_list.at(b_move_list.size()-1).toStdString().substr(1,2))).begin();
+        char piece = char(b_move_list.at(b_move_list.size()-1).toStdString().at(0));
+          tile[origin_pos->first][origin_pos->second]->piece = 0;
+          tile[origin_pos->first][origin_pos->second]->piece = 1;
+        tile[origin_pos->first][origin_pos->second]->pieceColor=0;
+        tile[origin_pos->first][origin_pos->second]->display(piece);
+        int a= ui->p2_negative->text().toInt()-5;
+        ui->p2_negative->setText(QString::number(a));
+        turn=0;
+    }
+    else if (turn==0 && w_move_list.size()>0)
+    {
+
+        auto dest_pos =change_coord(QString::fromStdString(w_move_list.at(w_move_list.size()-1).toStdString().substr(3,2))).begin();
+           del_piece(tile[dest_pos->first][dest_pos->second]);
+
+           auto origin_pos =change_coord(QString::fromStdString(w_move_list.at(w_move_list.size()-1).toStdString().substr(1,2))).begin();
+           char piece = char(w_move_list.at(w_move_list.size()-1).toStdString().at(0));
+           tile[origin_pos->first][origin_pos->second]->piece=0;
+           tile[origin_pos->first][origin_pos->second]->piece=1;
+           tile[origin_pos->first][origin_pos->second]->pieceColor=1;
+           tile[origin_pos->first][origin_pos->second]->display(piece);
+           int a= ui->p1_negative->text().toInt()-5;
+           ui->p1_negative->setText(QString::number(a));
+           turn=1;
+    }
 
 }
