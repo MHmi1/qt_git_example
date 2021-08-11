@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QTableWidget>
+#include <QTextEdit>
 extern void delay(int millisecondsToWait);
 
 int count = 0, turn = 1, exp[60], max = 0;
@@ -171,22 +172,41 @@ void chessBoard(QWidget *baseWidget, Tile *tile[8][8])
     bC = 4;
 }
 
-void accessories(QWidget *baseWidget)
+void accessories(bool flag,QWidget *baseWidget)
 {
-    //QLabel *moves = new QLabel(baseWidget);
-    //moves->setGeometry(1000, 105, 250, 550);
-   // moves->setStyleSheet("QLabel {background-color: white;}");
+     QTextEdit *txt = new QTextEdit(baseWidget);
+
+    if (flag==0)
+    {
+        txt->setGeometry(1000, 105, 250, 550);
+        txt->setStyleSheet("QLabel {background-color: gray;}");
+         txt->setDisabled(1);
+          txt->show();
+    }
+
+    else if (flag==1)
+    {
+        if (turn ==1)
+        {
+            txt->setText("white player :");
+            txt->append("\t #"+w_move_list.at(w_move_list.size()-1));
+        }
+        if (turn==0)
+        {
+            txt->setText("black player :");
+            txt->append("\t #"+b_move_list.at(b_move_list.size()-1));
+        }
+    }
 }
 
 void game_start(int  flag)
 {
-
     QWidget *myWidget = new QWidget();
-
+    myWidget->setWindowTitle("Advanced Chess Board ver Beta");
     if (flag==1) //start game
     {
         myWidget->setGeometry(0, 0, 1370, 700);
-        accessories(myWidget);
+        accessories(0,myWidget);
         chessBoard(myWidget, tile);
         myWidget->show();
     }
@@ -203,8 +223,7 @@ void game_start(int  flag)
         msgBox.setInformativeText(" The winner is the  " + win_msg + " player !");
 
         QPushButton *okbtn = msgBox.addButton(QMessageBox::Ok);
-       // if (myWidget->isActiveWindow() ==1 )
-        //{
+
         msgBox.show();
         if (msgBox.clickedButton() == okbtn)
         {
@@ -221,8 +240,9 @@ void game_start(int  flag)
             exit(0);
         }
     }
-   // }
 }
+
+
 
 int main(int argc, char *argv[])
 {

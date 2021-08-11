@@ -19,15 +19,14 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     friend class board;
-    friend void Tile::display(char);
+   // friend void soldier_sec_half(const Tile *t);
     Q_OBJECT
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    //std::string,std::string,std::string
     void g(QString,QString,QString);
    void set_scores();
-
+   int  a;
     ~MainWindow();
 
 private slots:
@@ -46,7 +45,16 @@ private slots:
 
     void on_undo_btn_clicked();
 
+    void on_b_lost_label_linkHovered(const QString &link);
+
+    void on_w_lost_label_linkHovered(const QString &link);
+
+    void on_comboBox_b_activated(int index);
+
+    void on_comboBox_w_activated(int index);
+
 public slots:
+
     void startStopTimer();
     void resetTimer();
     void update();
