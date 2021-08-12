@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/black">
+        <file>Black/b-bishop.svg</file>
+        <file>Black/b-king.svg</file>
+        <file>Black/b-knight.svg</file>
+        <file>Black/b-pawn.svg</file>
+        <file>Black/b-queen.svg</file>
+        <file>Black/b-rook.svg</file>
+    </qresource>
+    <qresource prefix="/white">
+        <file>White/w-bishop.svg</file>
+        <file>White/w-king.svg</file>
+        <file>White/w-knight.svg</file>
+        <file>White/w-pawn.svg</file>
+        <file>White/w-queen.svg</file>
+        <file>White/w-rook.svg</file>
+    </qresource>
+    <qresource prefix="/utility">
+        <file>confirm.png</file>
+        <file>dispensing.png</file>
+        <file>exit.png</file>
+        <file>exp.png</file>
+        <file>Frame 7.png</file>
+        <file>Frame 8.png</file>
+        <file>restart.png</file>
+        <file>start.png</file>
+        <file>move.mp3</file>
+        <file>Error.wav</file>
+        <file>hit.wav</file>
+        <file>board.png</file>
+    </qresource>
+</RCC>
