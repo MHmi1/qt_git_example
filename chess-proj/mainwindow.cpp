@@ -10,7 +10,6 @@
 #include <QTime>
 #include <QDate>
 #include <QTimer>
-#include "board.h"
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QRandomGenerator>
@@ -18,6 +17,16 @@
 #include <string>
 #include <QVector>
 #include <QStandardItemModel>
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+extern void continue_game(QString moves);
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
 extern bool is_soldier_end;
 extern std::vector<char> lost_white;
 extern std::vector<char> lost_black;
@@ -27,12 +36,30 @@ extern Tile *tile[8][8];
 bool is_dual_avctive = 0;
 extern std::array<int, 2> bscore;
 extern std::array<int, 2> wscore;
+<<<<<<< Updated upstream
 extern const QVector<QString> b_move_list;
 extern const QVector<QString> w_move_list;
 extern void game_start(int flag);
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+extern QVector<QString> b_move_list;
+extern QVector<QString> w_move_list;
+extern void game_start_end(int flag);
+=======
+extern const QVector<QString> b_move_list;
+extern const QVector<QString> w_move_list;
+extern void game_start(int flag);
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+=======
+extern const QVector<QString> b_move_list;
+extern const QVector<QString> w_move_list;
+extern void game_start(int flag);
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
 extern int turn;
 extern void del_piece(Tile *temp);
-
+bool is_reveiw_act=0;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), watch(new Stopwatch())
 {
@@ -54,11 +81,20 @@ MainWindow::MainWindow(QWidget *parent)
   QImage Image;
   Image.load(":/utility/board.png");
   QPixmap pixmap = QPixmap::fromImage(Image);
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
   // int with = ui->board_label->width();
   // int height = ui->board_label->height();
   // QPixmap fitpixmap = pixmap.scaled(with, height); // full fill                                               // qpixmap fitpixmap = pixmap.scaled (with, height, qt :: keEpaspectratio, qt :: smoothtransformation); // Scalable
   // ui->board_label->setPixmap(fitpixmap);
   // qpixmap fitpixmap = pixmap.scaled (with, height, qt :: keEpaspectratio, qt :: smoothtransformation); // Scalable
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
 
   QLabel *status = new QLabel(this);
   status->setText(" ->Status : no game avilable ");
@@ -106,7 +142,19 @@ void MainWindow::on_start_clicked()
 void MainWindow::g(QString a, QString b, QString c)
 {
 
+<<<<<<< Updated upstream
   game_start(1);
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+  game_start_end(1);
+=======
+  game_start(1);
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+=======
+  game_start(1);
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
   ui->game_label2->setText(c);
   ui->p1_negative->setText("0");
   ui->p1_positive->setText("0");
@@ -134,6 +182,20 @@ void MainWindow::g(QString a, QString b, QString c)
   ui->double_btn->setEnabled(1);
   ui->undo_btn->setEnabled(1);
   ui->dispen_btn->setEnabled(1);
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+  ui->save_btn->setEnabled(1);
+  ui->load_btn->close();
+  ui->load_btn->setEnabled(0);
+  ui->view_last_btn->close();
+  ui->view_last_btn->setEnabled(0);
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
   turn = 1;
 }
 
@@ -224,7 +286,19 @@ void MainWindow::on_dispen_btn_clicked()
   // int total_p1 = ui->p1_positive->text().toInt() +  ui->p1_negative->text().toInt();
   // int total_p2 = ui->p2_positive->text().toInt() +  ui->p2_negative->text().toInt();
   watch->pause();
+<<<<<<< Updated upstream
   game_start(0);
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+  game_start_end(0);
+=======
+  game_start(0);
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+=======
+  game_start(0);
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
 }
 
 void MainWindow::on_double_btn_clicked()
@@ -340,6 +414,7 @@ void MainWindow::on_undo_btn_clicked() // this function operation based on  chec
 }
 
 void MainWindow::on_b_lost_label_linkHovered(const QString &link)
+<<<<<<< Updated upstream
 {
   QString black;
   ui->comboBox_b->clear();
@@ -415,8 +490,92 @@ void MainWindow::on_w_lost_label_linkHovered(const QString &link)
       }
     }
   }
+=======
+{
+  QString black;
+  ui->comboBox_b->clear();
+  for (int i = 0; i < lost_black.size(); i++)
+  {
+    switch (lost_black.at(i))
+    {
+    case 'Q':
+      black += "Queen";
+      break;
+    case 'H':
+      black += "Horse";
+      break;
+    case 'R':
+      black += "Rook";
+      break;
+    case 'P':
+      black += "Pawn";
+      break;
+    case 'B':
+      black += "Bishop";
+      break;
+    }
+    ui->comboBox_b->addItem(black);
+    black = "";
+
+    for (int i = 0; i < ui->comboBox_b->count(); i++)
+    {
+      if (ui->comboBox_b->itemText(i).toStdString().at(0) == 'P')
+      {
+        QStandardItemModel *model = dynamic_cast<QStandardItemModel *>(ui->comboBox_b->model());
+        QStandardItem *item = model->item(i, 0);
+        item->setEnabled(0);
+      }
+<<<<<<< HEAD
+<<<<<<< HEAD
+    }
+  }
+}
+//--------------------------------------------------------
+=======
+    }
+  }
 }
 
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+void MainWindow::on_w_lost_label_linkHovered(const QString &link)
+{
+  QString white;
+  ui->comboBox_w->clear();
+  for (int i = 0; i < lost_white.size(); i++)
+  {
+    switch (lost_white.at(i))
+    {
+    case 'Q':
+      white += "Queen";
+      break;
+    case 'H':
+      white += "Horse";
+      break;
+    case 'R':
+      white += "Rook";
+      break;
+    case 'P':
+      white += "Pawn";
+      break;
+    case 'B':
+      white += "Bishop";
+      break;
+    }
+    ui->comboBox_w->addItem(white);
+    white = "";
+
+    for (int i = 0; i < ui->comboBox_w->count(); i++)
+    {
+      if (ui->comboBox_w->itemText(i).toStdString().at(0) == 'P')
+      {
+        QStandardItemModel *model = dynamic_cast<QStandardItemModel *>(ui->comboBox_w->model());
+        QStandardItem *item = model->item(i, 0);
+        item->setEnabled(0);
+      }
+    }
+  }
+}
+//--------------------------------------------------------
 void MainWindow::on_comboBox_b_activated(int index)
 {
   int cnt = 0;
@@ -437,8 +596,107 @@ void MainWindow::on_comboBox_b_activated(int index)
 
       del_piece(tile[ite->first][ite->second]);
 
+<<<<<<< HEAD
       tile[ite->first][ite->second]->piece = 0;
       tile[ite->first][ite->second]->piece = 1;
+      tile[ite->first][ite->second]->pieceColor = 0;
+      tile[ite->first][ite->second]->display(ui->comboBox_b->itemText(index).toStdString().at(0));
+      QString mov = ui->comboBox_b->itemText(index).toStdString().at(0) + QString::fromStdString(b_move_list.at(b_move_list.size() - 1).toStdString().substr(3, 2) + b_move_list.at(b_move_list.size() - 1).toStdString().substr(3, 2));
+      b_move_list.push_back(mov);
+    }
+  }
+  is_soldier_end = 0;
+}
+//--------------------------------------------------------
+void MainWindow::on_comboBox_w_activated(int index)
+{
+  int cnt = 0;
+  for (int i = 0; i < lost_white.size(); i++)
+  {
+    if (lost_white.at(i) == 'Q' || lost_white.at(i) == 'R' || lost_white.at(i) == 'B' || lost_white.at(i) == 'H')
+=======
+void MainWindow::on_comboBox_b_activated(int index)
+{
+  int cnt = 0;
+  for (int i = 0; i < lost_black.size(); i++)
+  {
+    if (lost_black.at(i) == 'Q' || lost_black.at(i) == 'R' || lost_black.at(i) == 'B' || lost_black.at(i) == 'H')
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+    {
+      cnt++;
+    }
+  }
+
+  if (is_soldier_end == 1 && cnt > 0)
+  {
+<<<<<<< HEAD
+    if (w_move_list.at(w_move_list.size() - 1).toStdString().at(0) == 'P')
+    {
+      std::map<int, int> it = change_coord(QString::fromStdString(w_move_list.at(w_move_list.size() - 1).toStdString().substr(3, 2)));
+=======
+    if (b_move_list.at(b_move_list.size() - 1).toStdString().at(0) == 'P')
+    {
+      std::map<int, int> it = change_coord(QString::fromStdString(b_move_list.at(b_move_list.size() - 1).toStdString().substr(3, 2)));
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+      std::map<int, int>::iterator ite = it.begin();
+
+      del_piece(tile[ite->first][ite->second]);
+
+      tile[ite->first][ite->second]->piece = 0;
+      tile[ite->first][ite->second]->piece = 1;
+<<<<<<< HEAD
+      tile[ite->first][ite->second]->pieceColor = 1;
+      tile[ite->first][ite->second]->display(ui->comboBox_w->itemText(index).toStdString().at(0));
+
+      QString mov1 = ui->comboBox_w->itemText(index).toStdString().at(0) + QString::fromStdString(w_move_list.at(w_move_list.size() - 1).toStdString().substr(3, 2) + w_move_list.at(w_move_list.size() - 1).toStdString().substr(3, 2));
+      w_move_list.push_back(mov1);
+    }
+  }
+  is_soldier_end = 0;
+=======
+    }
+  }
+}
+
+void MainWindow::on_w_lost_label_linkHovered(const QString &link)
+{
+  QString white;
+  ui->comboBox_w->clear();
+  for (int i = 0; i < lost_white.size(); i++)
+  {
+    switch (lost_white.at(i))
+    {
+    case 'Q':
+      white += "Queen";
+      break;
+    case 'H':
+      white += "Horse";
+      break;
+    case 'R':
+      white += "Rook";
+      break;
+    case 'P':
+      white += "Pawn";
+      break;
+    case 'B':
+      white += "Bishop";
+      break;
+    }
+    ui->comboBox_w->addItem(white);
+    white = "";
+
+    for (int i = 0; i < ui->comboBox_w->count(); i++)
+    {
+      if (ui->comboBox_w->itemText(i).toStdString().at(0) == 'P')
+      {
+        QStandardItemModel *model = dynamic_cast<QStandardItemModel *>(ui->comboBox_w->model());
+        QStandardItem *item = model->item(i, 0);
+        item->setEnabled(0);
+      }
+    }
+  }
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+=======
       tile[ite->first][ite->second]->pieceColor = 0;
       tile[ite->first][ite->second]->display(ui->comboBox_b->itemText(index).toStdString().at(0));
     }
@@ -474,4 +732,243 @@ void MainWindow::on_comboBox_w_activated(int index)
     }
   }
   is_soldier_end = 0;
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
 }
+  //--------------------------------------------------------
+
+<<<<<<< HEAD
+void MainWindow::on_save_btn_clicked()
+{
+
+  QString fileName;
+  fileName = "<" + ui->p1_name->text() + ">-<" + ui->p2_name->text() + ">-<" + ui->game_label2->text() + ">.acd";
+  fileName = QFileDialog::getSaveFileName(this,
+                                          tr("Save Advanced Chess game"), "",
+                                          tr("chess game (*.acd);;All Files (*)"));
+
+  QFile file(fileName);
+
+  if (!file.open(QIODevice::WriteOnly | QFile::Text))
+  {
+    QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
+    return;
+  }
+
+  setWindowTitle(fileName);
+  QString w_mov, b_mov;
+  QTextStream out(&file);
+  for (int i = 0; i < w_move_list.size(); i++)
+  {
+    w_mov += 'W' + w_move_list.at(i) + "-";
+  }
+  for (int i = 0; i < b_move_list.size(); i++)
+  {
+    b_mov += 'B' + b_move_list.at(i) + "-";
+  }
+
+  QString text = w_mov + '#' + b_mov + '*' + ui->p1_name->text() + '-' + ui->p2_name->text() + '-' + ui->game_label2->text();
+  out << text;
+  file.close();
+}
+
+QString filename1="";
+//----------------------------------------------------------
+void MainWindow::on_view_last_btn_clicked()
+{
+  QDir dir(".");
+
+   QString filedir;
+  QString targetStr = ".acd"; // What we search for
+  QFileInfoList hitList;      // Container for matches
+  QString directory = dir.absolutePath();
+  QDirIterator it(directory, QDirIterator::Subdirectories);
+
+  // Iterate through the directory using the QDirIterator
+  while (it.hasNext())
+  {
+    QString filename = it.next();
+    QFileInfo file(filename);
+
+    if (file.isDir())
+    { // Check if it's a dir
+      continue;
+    }
+    // If the filename contains target string - put it in the hitlist
+    if (file.fileName().contains(targetStr, Qt::CaseInsensitive))
+    {
+      hitList.append(file);
+    }
+  }
+
+  foreach (QFileInfo hit, hitList)
+  {
+
+    if (QString::fromStdString(hit.absoluteFilePath().toStdString().substr(hit.absoluteFilePath().toStdString().size() - 3, 3)) == "acd")
+    {
+      filedir = hit.absoluteFilePath();
+    }
+  }
+  if (filedir == "")
+  {
+    QMessageBox * msg = new QMessageBox ();
+    msg->setText("No File Find in this Directory ! Please start a game first and try again !");
+    msg->show();
+  }
+  else if (filedir != "" )
+  {
+      filename1 = filedir;
+  MainWindow::on_load_btn_clicked(1);
+  }
+>>>>>>> Stashed changes
+}
+//--------------------------------------------------------
+void MainWindow::on_load_btn_clicked(bool flag=0)
+{
+    if (flag==0) //continue existing game
+    {
+
+        QString fileName = QFileDialog::getOpenFileName(this,
+                    tr("Open chess file"), "",
+                    tr("Advanced Chess file (*.acd);;All Files (*)"));
+
+                QFile file(fileName);
+                setWindowTitle(fileName);
+
+                if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
+                    QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
+                    return;
+                }
+
+                QTextStream in(&file);
+
+<<<<<<< Updated upstream
+=======
+                QString text = in.readAll();
+                 qDebug()<<text;
+                  is_reveiw_act=0;
+                 continue_game(text);
+
+                file.close();
+
+    }
+  if (flag==1 && filename1 !="") //view last game
+  {
+
+      QFile file(filename1);
+      setWindowTitle(filename1);
+
+      if (!file.open(QIODevice::ReadOnly | QFile::Text))
+      {
+        QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
+        return;
+      }
+
+      QTextStream in(&file);
+
+      QString text = in.readAll();
+        ::is_reveiw_act=1;
+      continue_game(text);
+
+      file.close();
+
+  }
+=======
+>>>>>>> Stashed changes
+void MainWindow::on_comboBox_b_activated(int index)
+{
+  int cnt = 0;
+  for (int i = 0; i < lost_black.size(); i++)
+  {
+    if (lost_black.at(i) == 'Q' || lost_black.at(i) == 'R' || lost_black.at(i) == 'B' || lost_black.at(i) == 'H')
+    {
+      cnt++;
+    }
+  }
+
+  if (is_soldier_end == 1 && cnt > 0)
+  {
+    if (b_move_list.at(b_move_list.size() - 1).toStdString().at(0) == 'P')
+    {
+      std::map<int, int> it = change_coord(QString::fromStdString(b_move_list.at(b_move_list.size() - 1).toStdString().substr(3, 2)));
+      std::map<int, int>::iterator ite = it.begin();
+<<<<<<< Updated upstream
+
+      del_piece(tile[ite->first][ite->second]);
+
+=======
+
+      del_piece(tile[ite->first][ite->second]);
+
+>>>>>>> Stashed changes
+      tile[ite->first][ite->second]->piece = 0;
+      tile[ite->first][ite->second]->piece = 1;
+      tile[ite->first][ite->second]->pieceColor = 0;
+      tile[ite->first][ite->second]->display(ui->comboBox_b->itemText(index).toStdString().at(0));
+<<<<<<< Updated upstream
+    }
+  }
+  is_soldier_end = 0;
+}
+
+void MainWindow::on_comboBox_w_activated(int index)
+{
+  int cnt = 0;
+  for (int i = 0; i < lost_white.size(); i++)
+  {
+    if (lost_white.at(i) == 'Q' || lost_white.at(i) == 'R' || lost_white.at(i) == 'B' || lost_white.at(i) == 'H')
+    {
+      cnt++;
+    }
+  }
+
+  if (is_soldier_end == 1 && cnt > 0)
+  {
+    if (w_move_list.at(w_move_list.size() - 1).toStdString().at(0) == 'P')
+    {
+      std::map<int, int> it = change_coord(QString::fromStdString(w_move_list.at(w_move_list.size() - 1).toStdString().substr(3, 2)));
+      std::map<int, int>::iterator ite = it.begin();
+
+
+=======
+    }
+  }
+  is_soldier_end = 0;
+}
+
+void MainWindow::on_comboBox_w_activated(int index)
+{
+  int cnt = 0;
+  for (int i = 0; i < lost_white.size(); i++)
+  {
+    if (lost_white.at(i) == 'Q' || lost_white.at(i) == 'R' || lost_white.at(i) == 'B' || lost_white.at(i) == 'H')
+    {
+      cnt++;
+    }
+  }
+
+  if (is_soldier_end == 1 && cnt > 0)
+  {
+    if (w_move_list.at(w_move_list.size() - 1).toStdString().at(0) == 'P')
+    {
+      std::map<int, int> it = change_coord(QString::fromStdString(w_move_list.at(w_move_list.size() - 1).toStdString().substr(3, 2)));
+      std::map<int, int>::iterator ite = it.begin();
+
+
+>>>>>>> Stashed changes
+      del_piece(tile[ite->first][ite->second]);
+
+      tile[ite->first][ite->second]->piece = 0;
+      tile[ite->first][ite->second]->piece = 1;
+      tile[ite->first][ite->second]->pieceColor = 1;
+      tile[ite->first][ite->second]->display(ui->comboBox_w->itemText(index).toStdString().at(0));
+    }
+  }
+  is_soldier_end = 0;
+<<<<<<< Updated upstream
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
+}
+
+//--------------------------------------------------------
+

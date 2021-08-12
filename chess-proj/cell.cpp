@@ -45,8 +45,7 @@ void just_check();                             // check out for checking in ches
 void check_mate();                             // check out for check-mate in chess
 void soldier_sec_half(const Tile *);           // check for is the soldier crossed halfway !
 QString black_rand_move();                     //choose a black piece for random movement
-QString white_rand_move();                     //choose a white piece for random movement
-bool dual_move();                              // dual move function
+QString white_rand_move();                     //choose a white piece for random movement                          // dual move function
 void Duplicate_move(int);                      // checking for duplicate movement for each player(- score)
 void end_soldier(Tile *);                      // checking for the slodier has reached the end
 bool is_draw();                                // check for draw condintion of the game
@@ -91,7 +90,6 @@ void del_piece(Tile *temp)
 
 void Tile::display(char elem)
 {
-
     this->pieceName = elem;
 
     if (this->pieceColor && this->piece)
@@ -208,7 +206,7 @@ void validate(Tile *temp, int c)
             if (retValue == 1)
             {
                 click1 = new Tile();
-                temp->setStyleSheet("QLabel {background-color: #0bc51d;}");
+                temp->setStyleSheet("QLabel {background-color: #0bc51d;}"); //green
                 click1 = temp;
                 choose_cnt++;
             }
@@ -403,7 +401,12 @@ void validate(Tile *temp, int c)
                 qDebug() << " knight_threats :" << knight_threats << endl;
                 qDebug() << " pawn_threats :" << pawn_threats << endl;
                 qDebug() << " king_threats :" << king_threats << endl;
+                  qDebug() <<" QString black_rand_move()"<< black_rand_move()<<endl;
+                 //auto ite=  change_coord(QString::fromStdString(black_rand_move().toStdString().substr(1,2))).begin();
 
+                 //validate((tile[ite->first][ite->second]),1);
+                 //int poss=valid->chooser(tile[ite->first][ite->second]);
+                // qDebug() <<poss<<endl;
                  if (is_dual_avctive == 1)
                  {
 
@@ -427,6 +430,8 @@ void validate(Tile *temp, int c)
 
 void Tile::tileDisplay()
 {
+
+
     if (this->tileColor)
         this->setStyleSheet("QLabel {background-color: rgb(172, 110, 80);}:hover{background-color: rgb(86,175,185);}");
     else
@@ -515,10 +520,8 @@ void disOrange()
 
 void Duplicate_move(int color)
 {
-
     if (w_move_list.size() > 2 && color == 1)
     {
-
         if ((w_move_list.at(w_move_list.size() - 1).at(0) == w_move_list.at(w_move_list.size() - 2).at(0)) && (w_move_list.at(w_move_list.size() - 1).toStdString().substr(1, 2) == w_move_list.at(w_move_list.size() - 2).toStdString().substr(3, 2)) && (w_move_list.at(w_move_list.size() - 1).toStdString().substr(3, 2) == w_move_list.at(w_move_list.size() - 2).toStdString().substr(1, 2)))
             qDebug() << " negative score for white (Duplicate_move !)" << endl;
     }
@@ -715,13 +718,25 @@ QString white_rand_move()
     return w_existing_piece.at(randomNumber);
 }
 
+<<<<<<< HEAD
+=======
 bool dual_move()
 {
 
 }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
 bool hit_foe(const Tile *temp)
 {
+  /*  QObject::connect(&button, &QPushButton::clicked,
+                     std::bind(&NotAQObject::member, notAQObject));*/
+
     std::map<int, int> t = change_coord(temp->get_coord());
     int score = 0;
     switch (temp->pieceName)

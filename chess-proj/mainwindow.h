@@ -7,18 +7,28 @@
 #include <QTime>
 #include "stopwatch.h"
 #include <QDate>
-#include "board.h"
 #include <QTimer>
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
     class MainWindow;
+    class Tile;
 }
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
+<<<<<<< HEAD
+
+=======
     friend class board;
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
    // friend void soldier_sec_half(const Tile *t);
     Q_OBJECT
 
@@ -53,6 +63,21 @@ private slots:
 
     void on_comboBox_w_activated(int index);
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+    void on_load_btn_clicked(bool);
+
+    void on_save_btn_clicked();
+
+    void on_view_last_btn_clicked();
+
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+=======
+>>>>>>> 71dd5cb6e83be13e96c41903760ea1984eea474a
+>>>>>>> Stashed changes
 public slots:
 
     void startStopTimer();
@@ -62,10 +87,9 @@ public slots:
 private:
     QLabel *status = new QLabel(this);
     Stopwatch * watch;
-     Ui::MainWindow *ui;
-    board * br=nullptr;
-protected:
 
+protected:
+ Ui::MainWindow *ui;
 
     //----------------------------------------------
 };
