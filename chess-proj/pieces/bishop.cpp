@@ -1,7 +1,7 @@
 #include "bishop.h"
 extern Tile *tile[8][8];
 extern int exp[60],max,wR,wC;
-
+extern bool king_at_check;
 Bishop::Bishop(Color c) :Chessman(BISHOP,c)
 {
 score = 8;
@@ -32,6 +32,11 @@ void Bishop::cal_threat(const Tile * foe) const
     {
            bishop_threats+=1;
     }
+    else if (foe->pieceName == 'K')
+    {
+           king_at_check=1;
+    }
+
 }
  bool Bishop::isValidMove(Tile * temp) const
 {

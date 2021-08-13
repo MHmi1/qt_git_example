@@ -1,5 +1,7 @@
 QT       += core gui
 
+QT       += core gui sql
+
 QT += core
 
 QT       += gui

@@ -1,6 +1,7 @@
 #include "knight.h"
 extern Tile *tile[8][8];
 extern int exp[60],max,wR,wC;
+extern bool king_at_check;
 Knight::Knight(Color c) :Chessman(KNIGHT,c)
 {
 score = 8;
@@ -28,6 +29,10 @@ void Knight::cal_threat(const Tile * foe) const
     else if (foe->pieceName == 'P')
     {
            knight_threats+=1;
+    }
+    else if (foe->pieceName == 'K')
+    {
+           king_at_check=1;
     }
 }
 

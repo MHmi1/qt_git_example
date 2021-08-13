@@ -1,7 +1,7 @@
 #include "rook.h"
 extern Tile *tile[8][8];
 extern int exp[60],max,wR,wC;
-
+extern bool king_at_check;
 Rook::Rook(Color c) :Chessman(ROOK,c)
 {
 score = 8;
@@ -9,7 +9,6 @@ score = 8;
 int rook_threats=0;
 void Rook::cal_threat(const Tile * foe) const
 {
-
     qDebug()<<"in rook::cal_threat "<<endl;
     if  (foe->pieceName == 'Q')
     {
@@ -30,6 +29,10 @@ void Rook::cal_threat(const Tile * foe) const
     else if (foe->pieceName == 'P')
     {
          rook_threats+=1;
+    }
+    else if (foe->pieceName == 'K')
+    {
+           king_at_check=1;
     }
 
 }

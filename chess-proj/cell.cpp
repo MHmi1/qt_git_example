@@ -9,27 +9,28 @@
 #include <QMediaPlayer>
 #include <QFile>
 #include <QStatusBar>
+#include <QSpinBox>
 #include <QMessageBox>
 
-bool is_soldier_end=0;
+bool is_soldier_end = 0;
 extern std::map<int, int> change_coord(QString coord);
 extern double SqrtNumber(double num);
 extern int bishop_threats, queen_threats, king_threats, pawn_threats, knight_threats, rook_threats; //variables for calculate threating other pieces
 validation *valid = new validation();
-QVector<QString> b_move_list;              // container to store balck movements
-QVector<QString> w_move_list;               // container to store white movements
-std::vector<char> lost_white;                    // container to store white lost pieces
-std::vector<char> lost_black;                   // container to store balck lost pieces
+QVector<QString> b_move_list; // container to store balck movements
+QVector<QString> w_move_list; // container to store white movements
+std::vector<char> lost_white; // container to store white lost pieces
+std::vector<char> lost_black; // container to store balck lost pieces
 QVector<QString> w_existing_piece;
 QVector<QString> b_existing_piece;
-bool is_castling_act=0;
+bool is_castling_act = 0;
 extern bool is_dual_avctive;
 
 extern int count, turn;
 extern QWidget *myWidget;
-extern Tile *click1;     // refer to tile * pinter at main.cpp
+extern Tile *click1;	 // refer to tile * pinter at main.cpp
 extern Tile *tile[8][8]; // refer to 2d tile array at main.cpp
-extern void delay( int millisecondsToWait );
+extern void delay(int millisecondsToWait);
 //extern void accessories(bool flag,QWidget *baseWidget=myWidget);
 void validate(Tile *temp, int c);
 void disOrange();
@@ -37,21 +38,61 @@ void disOrange();
 extern int is_w1_anpasan, is_w2_anpasan;
 extern int is_b1_anpasan, is_b2_anpasan;
 //extern double SqrtNumber(double num) ;
-void update_exist_piece();                     //update list of existing piece of each player
+void update_exist_piece(); //update list of existing piece of each player
 //std::map<int, int> change_coord(QString coord); change chess coordination to x,y(or row,col)
-void threat_foe();                             // check the foe threat has been realized
-bool hit_foe(const Tile *);                    // check attaking for calculate it's score
-void just_check();                             // check out for checking in chess
-void check_mate();                             // check out for check-mate in chess
-void soldier_sec_half(const Tile *);           // check for is the soldier crossed halfway !
-QString black_rand_move();                     //choose a black piece for random movement
-QString white_rand_move();                     //choose a white piece for random movement                          // dual move function
-void Duplicate_move(int);                      // checking for duplicate movement for each player(- score)
-void end_soldier(Tile *);                      // checking for the slodier has reached the end
-bool is_draw();                                // check for draw condintion of the game
-void castling(const QString &, int);           //  do castling of black and white player
-size_t path_len(QString move);                 //calculate the lenth of each movement
-int choose_cnt = 0;                            // counter for counting clicks
+void threat_foe();					 // check the foe threat has been realized
+bool hit_foe(const Tile *);			 // check attaking for calculate it's score
+void just_check();					 // check out for checking in chess
+void check_mate();					 // check out for check-mate in chess
+void soldier_sec_half(const Tile *); // check for is the soldier crossed halfway !
+QString black_rand_move();			 //choose a black piece for random movement
+QString white_rand_move();			 //choose a white piece for random movement                          // dual move function
+void Duplicate_move(int);			 // checking for duplicate movement for each player(- score)
+void end_soldier(Tile *);			 // checking for the slodier has reached the end
+bool is_draw();						 // check for draw condintion of the game
+void castling(const QString &, int); //  do castling of black and white player
+size_t path_len(QString move);		 //calculate the lenth of each movement
+int choose_cnt = 0;					 // counter for counting clicks
+bool king_at_check=0;
+void w_score_update(int num) //update white - or + score at database
+{
+    QSqlQuery q;
+
+    QString str = "UPDATE player_score SET p2_positive = p2_positive+" + QString::number(num) + " WHERE ID = 1;";
+    QString str1 = "UPDATE player_score SET p2_negative = p2_negative" + QString::number(num) + " WHERE ID = 1;";
+    if (num > 0 )
+    {
+
+        q.exec(str);
+    }
+    else if (num < 0)
+    {
+
+        q.exec(str1);
+    }
+    QSqlQueryModel *m = new QSqlQueryModel;
+    m->setQuery(q);
+}
+
+void b_score_update(int num) //update black - or + score at database
+{
+    QSqlQuery q;
+    QString str = "UPDATE player_score SET p1_positive = p1_positive+" + QString::number(num) + " WHERE ID = 1;";
+    QString str1 = "UPDATE player_score SET p1_negative = p1_negative" + QString::number(num) + " WHERE ID = 1;";
+
+    if (num > 0)
+    {
+
+        q.exec(str);
+    }
+    else if (num < 0)
+    {
+
+        q.exec(str1);
+    }
+    QSqlQueryModel *m = new QSqlQueryModel;
+    m->setQuery(q);
+}
 //----------------------------------------------------
 
 void Tile::mousePressEvent(QMouseEvent *event)
@@ -71,7 +112,7 @@ size_t path_len(QString move)
 
     int y = p2->second - p1->second;
     p2->second >= p1->second ? y = p2->second - p1->second : y = p1->second - p2->second;
-    size_t len = SqrtNumber((x*x) + (y*y));
+    size_t len = SqrtNumber((x * x) + (y * y));
     return len;
 }
 
@@ -190,7 +231,7 @@ void Tile::display(char elem)
     else
         this->clear();
 }
-
+static bool last_t;
 void validate(Tile *temp, int c)
 {
     int retValue, i;
@@ -203,9 +244,16 @@ void validate(Tile *temp, int c)
             exp[max++] = temp->tileNum;
             retValue = valid->chooser(temp);
 
+            if ( king_at_check==1 && last_t == turn)
+            {
+                qDebug()<<(temp->pieceColor == 0 ? "white KING checked" : "black KING checked")<<endl;
+            }
+
             if (retValue == 1)
             {
                 click1 = new Tile();
+
+
                 temp->setStyleSheet("QLabel {background-color: #0bc51d;}"); //green
                 click1 = temp;
                 choose_cnt++;
@@ -218,7 +266,7 @@ void validate(Tile *temp, int c)
         }
         else
         {
-            //qDebug()<<" clicking anywhere ...";
+            //qDebug()<<" clicking anywhere .";
             count = 0;
         }
     }
@@ -237,6 +285,7 @@ void validate(Tile *temp, int c)
         {
             if (temp->tileNum == exp[i])
             {
+
                 hit_foe(temp);
 
                 click1->piece = 0;
@@ -305,8 +354,6 @@ void validate(Tile *temp, int c)
                     is_b2_anpasan = -1;
                 }
 
-                // qDebug() << white_rand_move();
-                //qDebug() << black_rand_move();
                 if (is_draw() == 1)
                 {
                     qDebug() << "u are at exit block(draw mode) ..." << endl;
@@ -318,105 +365,116 @@ void validate(Tile *temp, int c)
                 if (choose_cnt > 1)
                 {
                     qDebug() << "1 negate score for " << (temp->pieceColor ? "WHITE" : "BLACK") << "(touch_move rule)" << endl;
+                    if (temp->pieceColor == 0)
+                    {
+                        w_score_update(-1);
+                    }
+                    else if (temp->pieceColor == 1)
+                    {
+                        b_score_update(-1);
+                    }
                 }
 
-                //qDebug()<<"white exist :" <<w_existing_piece.size() <<"black exist"<< b_existing_piece.size()<<endl;
-                // qDebug()<<"white lost :" <<lost_white.size() <<"black lost"<< lost_black.size()<<endl;
+                if (temp->pieceColor == 1 )
+                {
+                    int total_threat = 0;
+                    if (queen_threats > 0)
+                    {
+                        total_threat += queen_threats;
+                    }
+                    if (bishop_threats > 0)
+                    {
+                        total_threat += bishop_threats;
+                    }
+                    if (rook_threats > 0)
+                    {
+                        total_threat += rook_threats;
+                    }
+                    if (knight_threats > 0)
+                    {
+                        total_threat += knight_threats;
+                    }
+                    if (pawn_threats > 0)
+                    {
+                        total_threat += pawn_threats;
+                    }
+                    if (king_threats > 0)
+                    {
+                        total_threat += king_threats;
+                    }
 
-                  if (temp->pieceColor==1)
-                  {
-                      int total_threat=0;
-                      if (queen_threats> 0)
-                      {
-                           total_threat+=queen_threats;
-                      }
-                      if (bishop_threats> 0)
-                      {
-                           total_threat+=bishop_threats;
-                      }
-                      if (rook_threats> 0)
-                      {
-                           total_threat+=rook_threats;
-                      }
-                      if (knight_threats> 0)
-                      {
-                           total_threat+=knight_threats;
-                      }
-                      if (pawn_threats> 0)
-                      {
-                           total_threat+=pawn_threats;
-                      }
-                      if (king_threats> 0)
-                      {
-                           total_threat+=king_threats;
-                      }
-
-                     // wscore[0]=total_threat;
-                      //wscore[1]=0;
-                       qDebug() <<total_threat <<"total scores for threating white palyer !!"<<endl;
-                  }
-
-
-                  if (temp->pieceColor==0)
-                  {
-                      int total_threat=0;
-                      if (queen_threats> 0)
-                      {
-                           total_threat+=queen_threats;
-                      }
-                      if (bishop_threats> 0)
-                      {
-                           total_threat+=bishop_threats;
-                      }
-                      if (rook_threats> 0)
-                      {
-                           total_threat+=rook_threats;
-                      }
-                      if (knight_threats> 0)
-                      {
-                           total_threat+=knight_threats;
-                      }
-                      if (pawn_threats> 0)
-                      {
-                           total_threat+=pawn_threats;
-                      }
-                      if (king_threats> 0)
-                      {
-                           total_threat+=king_threats;
-                      }
-                       qDebug() <<total_threat <<"total scores for threating black palyer !!"<<endl;
-                     //bscore[0]=total_threat;
-                   //  bscore[1]=0;
-
-                  }
+                    // wscore[0]=total_threat;
+                    //wscore[1]=0;
+                    qDebug() << total_threat << "total scores for threating white palyer !!" << endl;
+                    w_score_update(total_threat);
+                    king_threats = 0;
+                    pawn_threats = 0;
+                    knight_threats = 0;
+                    rook_threats = 0;
+                    bishop_threats = 0;
+                    queen_threats = 0;
+                }
+                else if (temp->pieceColor == 0)
+                {
+                    int total_threat = 0;
+                    if (queen_threats > 0)
+                    {
+                        total_threat += queen_threats;
+                    }
+                    if (bishop_threats > 0)
+                    {
+                        total_threat += bishop_threats;
+                    }
+                    if (rook_threats > 0)
+                    {
+                        total_threat += rook_threats;
+                    }
+                    if (knight_threats > 0)
+                    {
+                        total_threat += knight_threats;
+                    }
+                    if (pawn_threats > 0)
+                    {
+                        total_threat += pawn_threats;
+                    }
+                    if (king_threats > 0)
+                    {
+                        total_threat += king_threats;
+                    }
+                    qDebug() << total_threat << "total scores for threating black palyer !!" << endl;
+                    b_score_update(total_threat);
+                }
 
 
-                           music->setMedia(QUrl("qrc:/utility/move.mp3"));
-                           music->setVolume(85);
-                         music->play();
 
-                qDebug() << " queen_threats :" << queen_threats << endl;
-                qDebug() << " bishop_threats :" << bishop_threats << endl;
-                qDebug() << " rook_threats :" << rook_threats << endl;
-                qDebug() << " knight_threats :" << knight_threats << endl;
-                qDebug() << " pawn_threats :" << pawn_threats << endl;
-                qDebug() << " king_threats :" << king_threats << endl;
-                  qDebug() <<" QString black_rand_move()"<< black_rand_move()<<endl;
-                 //auto ite=  change_coord(QString::fromStdString(black_rand_move().toStdString().substr(1,2))).begin();
+             last_t=turn;
+                  king_at_check=0;
+                music->setMedia(QUrl("qrc:/utility/move.mp3"));
+                music->setVolume(85);
+                music->play();
 
-                 //validate((tile[ite->first][ite->second]),1);
-                 //int poss=valid->chooser(tile[ite->first][ite->second]);
+                // qDebug() << " queen_threats :" << queen_threats << endl;
+                //qDebug() << " bishop_threats :" << bishop_threats << endl;
+                // qDebug() << " rook_threats :" << rook_threats << endl;
+                // qDebug() << " knight_threats :" << knight_threats << endl;
+                // qDebug() << " pawn_threats :" << pawn_threats << endl;
+                // qDebug() << " king_threats :" << king_threats << endl;
+                // qDebug() <<" QString black_rand_move()"<< black_rand_move()<<endl;
+                //auto ite=  change_coord(QString::fromStdString(black_rand_move().toStdString().substr(1,2))).begin();
+
+                //validate((tile[ite->first][ite->second]),1);
+                //int poss=valid->chooser(tile[ite->first][ite->second]);
                 // qDebug() <<poss<<endl;
-                 if (is_dual_avctive == 1)
-                 {
+                if (is_dual_avctive == 1)
+                {
 
-                     is_dual_avctive=0;
-                 }
-                 else
-                 {
-                   turn = (turn + 1) % 2;
-                   is_dual_avctive=0;
-                 }
+                    is_dual_avctive = 0;
+                }
+                else
+                {
+                    turn = (turn + 1) % 2;
+                    is_dual_avctive = 0;
+                }
 
                 count = 0;
                 choose_cnt = 0;
@@ -430,7 +488,6 @@ void validate(Tile *temp, int c)
 
 void Tile::tileDisplay()
 {
-
 
     if (this->tileColor)
         this->setStyleSheet("QLabel {background-color: rgb(172, 110, 80);}:hover{background-color: rgb(86,175,185);}");
@@ -453,7 +510,7 @@ void castling(const QString &mov, int color)
         tile[ite->first][ite->second]->pieceColor = color;
         tile[ite->first][ite->second]->display('R');
         w_move_list.push_back("Ra1d1");
-        is_castling_act=1;
+        is_castling_act = 1;
     }
     else if (mov.at(0) == 'K' && mov.toStdString().substr(1, 2) == "e1" && mov.toStdString().substr(3, 2) == "g1")
     {
@@ -470,7 +527,7 @@ void castling(const QString &mov, int color)
         tile[ite->first][ite->second]->pieceColor = color;
         tile[ite->first][ite->second]->display('R');
         w_move_list.push_back("Rh1f1");
-        is_castling_act=1;
+        is_castling_act = 1;
     }
 
     if (mov.at(0) == 'K' && mov.toStdString().substr(1, 2) == "e8" && mov.toStdString().substr(3, 2) == "g8")
@@ -486,7 +543,7 @@ void castling(const QString &mov, int color)
         tile[ite->first][ite->second]->pieceColor = color;
         tile[ite->first][ite->second]->display('R');
         b_move_list.push_back("Rh8f8");
-        is_castling_act=1;
+        is_castling_act = 1;
     }
 
     else if (mov.at(0) == 'K' && mov.toStdString().substr(1, 2) == "e8" && mov.toStdString().substr(3, 2) == "c8")
@@ -502,7 +559,7 @@ void castling(const QString &mov, int color)
         tile[ite->first][ite->second]->pieceColor = color;
         tile[ite->first][ite->second]->display('R');
         b_move_list.push_back("Ra8d8");
-        is_castling_act=1;
+        is_castling_act = 1;
     }
 }
 
@@ -523,47 +580,50 @@ void Duplicate_move(int color)
     if (w_move_list.size() > 2 && color == 1)
     {
         if ((w_move_list.at(w_move_list.size() - 1).at(0) == w_move_list.at(w_move_list.size() - 2).at(0)) && (w_move_list.at(w_move_list.size() - 1).toStdString().substr(1, 2) == w_move_list.at(w_move_list.size() - 2).toStdString().substr(3, 2)) && (w_move_list.at(w_move_list.size() - 1).toStdString().substr(3, 2) == w_move_list.at(w_move_list.size() - 2).toStdString().substr(1, 2)))
-            qDebug() << " negative score for white (Duplicate_move !)" << endl;
+        {
+            // qDebug() << " negative score for white (Duplicate_move !)" << endl;
+            w_score_update(-2);
+        }
     }
 
     if (b_move_list.size() > 2 && color == 0)
     {
 
         if ((b_move_list.at(b_move_list.size() - 1).at(0) == b_move_list.at(b_move_list.size() - 2).at(0)) && (b_move_list.at(b_move_list.size() - 1).toStdString().substr(1, 2) == b_move_list.at(b_move_list.size() - 2).toStdString().substr(3, 2)) && (b_move_list.at(b_move_list.size() - 1).toStdString().substr(3, 2) == b_move_list.at(b_move_list.size() - 2).toStdString().substr(1, 2)))
-
-            qDebug() << "negative score for black (Duplicate_move !)" << endl;
+        {
+            // qDebug() << "negative score for black (Duplicate_move !)" << endl;
+            b_score_update(-2);
+        }
     }
 }
 
 void soldier_sec_half(const Tile *t)
 {
+
+    //QSqlQuery q;
     if ((t->pieceColor == 1) && (t->pieceName == 'P') && (t->coordinate == "a5" || t->coordinate == "b5" || t->coordinate == "c5" || t->coordinate == "d5" || t->coordinate == "e5" || t->coordinate == "f5" || t->coordinate == "g5" || t->coordinate == "h5"))
     {
         qDebug() << "3 pos score for white (sec half)" << endl;
+        w_score_update(3);
     }
     if ((t->pieceColor == 0) && (t->pieceName == 'P') && (t->coordinate == "a4" || t->coordinate == "b4" || t->coordinate == "c4" || t->coordinate == "d4" || t->coordinate == "e4" || t->coordinate == "f4" || t->coordinate == "g4" || t->coordinate == "h4"))
     {
         qDebug() << "3 pos score for black (sec half)" << endl;
+        b_score_update(3);
+
     }
-
-  /* connect(button, &QPushButton::clicked, this, [=]()
-            {
-                MainWindow::g(p1_name->text(), p2_name->text(), game_name->text());
-                window->close();
-            });*/
-
 }
 
 void end_soldier(Tile *t)
 {
-     QMessageBox msgBox;
+    QMessageBox msgBox;
     if ((t->pieceColor == 1) && (t->pieceName == 'P') && (t->coordinate == "a8" || t->coordinate == "b8" || t->coordinate == "c8" || t->coordinate == "d8" || t->coordinate == "e8" || t->coordinate == "f8" || t->coordinate == "g8" || t->coordinate == "h8"))
     {
-         is_soldier_end=1;
+        is_soldier_end = 1;
         qDebug() << " white solier is at the end , choose a new piece !" << endl;
         if (lost_white.size() > 1)
         {
-            msgBox.setText( "  white solier is at the end !");
+            msgBox.setText("  white solier is at the end !");
             msgBox.setInformativeText(" Please choose a new piece !");
             QPushButton *okbtn = msgBox.addButton(QMessageBox::Ok);
             msgBox.show();
@@ -573,12 +633,12 @@ void end_soldier(Tile *t)
 
     if ((t->pieceColor == 0) && (t->pieceName == 'P') && (t->coordinate == "a1" || t->coordinate == "b1" || t->coordinate == "c1" || t->coordinate == "d1" || t->coordinate == "e1" || t->coordinate == "f1" || t->coordinate == "g1" || t->coordinate == "h1"))
     {
-         is_soldier_end=1;
+        is_soldier_end = 1;
         qDebug() << "black solier is at the end , choose a new piece !" << endl;
 
         if (lost_black.size() > 1)
         {
-            msgBox.setText( "  black solier is at the end !");
+            msgBox.setText("  black solier is at the end !");
             msgBox.setInformativeText(" Please choose a new piece !");
             QPushButton *okbtn = msgBox.addButton(QMessageBox::Ok);
             msgBox.show();
@@ -720,9 +780,6 @@ QString white_rand_move()
 
 bool hit_foe(const Tile *temp)
 {
-  /*  QObject::connect(&button, &QPushButton::clicked,
-                     std::bind(&NotAQObject::member, notAQObject));*/
-
     std::map<int, int> t = change_coord(temp->get_coord());
     int score = 0;
     switch (temp->pieceName)
@@ -750,12 +807,14 @@ bool hit_foe(const Tile *temp)
     {
         if (tile[ite.first][ite.second]->piece && temp->pieceColor == 1)
         {
+            b_score_update(score);
             qDebug() << score << "pos score for attacking black " << endl;
             lost_white.push_back(tile[ite.first][ite.second]->pieceName);
             return true;
         }
-         if (tile[ite.first][ite.second]->piece && temp->pieceColor == 0)
+        if (tile[ite.first][ite.second]->piece && temp->pieceColor == 0)
         {
+            w_score_update(score);
             qDebug() << score << "pos score for attacking white " << endl;
             lost_black.push_back(tile[ite.first][ite.second]->pieceName);
             return true;

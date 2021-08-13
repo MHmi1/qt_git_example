@@ -8,6 +8,7 @@
 #include "stopwatch.h"
 #include <QDate>
 #include <QTimer>
+
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
@@ -19,14 +20,13 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
 
-   // friend void soldier_sec_half(const Tile *t);
+   // friend void soldier_end(Tile *t);
     Q_OBJECT
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    void g(QString,QString,QString);
-   void set_scores();
-   int  a;
+    void set_player_inf(QString,QString,QString);
+
     ~MainWindow();
 
 private slots:
@@ -58,6 +58,10 @@ private slots:
     void on_save_btn_clicked();
 
     void on_view_last_btn_clicked();
+
+    void on_p1_name_linkHovered(const QString &link);
+
+    void on_p2_name_linkHovered(const QString &link);
 
 public slots:
 

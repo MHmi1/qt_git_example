@@ -3,6 +3,7 @@ extern Tile *tile[8][8];
 extern int exp[60], max, wR, wC;
 extern QVector<QString> w_move_list, b_move_list;
 extern size_t path_len(QString);
+extern bool king_at_check;
 int is_w1_anpasan = -1, is_w2_anpasan = -1, is_b1_anpasan = -1, is_b2_anpasan = -1;
 Pawn::Pawn(Color c) : Chessman(PAWN, c)
 {
@@ -32,6 +33,10 @@ void Pawn::cal_threat(const Tile *foe) const
     else if (foe->pieceName == 'P')
     {
         pawn_threats += 1;
+    }
+    else if (foe->pieceName == 'K')
+    {
+           king_at_check=1;
     }
 }
 

@@ -1,6 +1,7 @@
 #include "queen.h"
 extern Tile *tile[8][8];
 extern int exp[60], max, wR, wC;
+extern bool king_at_check;
 Queen::Queen(Color c) : Chessman(QUEEN, c)
 {
     score = 15;
@@ -29,6 +30,10 @@ void Queen::cal_threat(const Tile *foe) const
     else if (foe->pieceName == 'P')
     {
         queen_threats += 1;
+    }
+    else if (foe->pieceName == 'K')
+    {
+           king_at_check=1;
     }
 }
 bool Queen::isValidMove(Tile *temp) const

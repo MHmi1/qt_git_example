@@ -2,7 +2,10 @@
 #define TILE_H
 #include <QLabel>
 #include <QDebug>
-
+#include <QSqlDatabase>
+#include <QSqlDriver>
+#include <QSqlQuery>
+#include <QSqlQueryModel>
 
 class Tile: public QLabel
 {
@@ -23,7 +26,6 @@ public:
     void display(char elem);
     void tileDisplay();
     QString get_coord() const;
-
 
 };
 
