@@ -93,7 +93,7 @@ bool Pawn::isValidMove(Tile *temp) const
 
             if ((tile[row][col - 1]->pieceName == 'P' && tile[row][col - 1]->pieceColor == 0) && tile[row][col]->row == 3 && path_len(b_move_list.at(b_move_list.size() - 1)) == 2 && b_move_list.at(b_move_list.size() - 1).at(0) == 'P')
             {
-                qDebug() << b_move_list.at(b_move_list.size() - 1) << endl;
+               // qDebug() <<"black sol anapasan move :"<<  b_move_list.at(b_move_list.size() - 1) << endl;
                 exp[max++] = tile[row - 1][col - 1]->tileNum;
                 retVal = 1;
                 is_w1_anpasan = col - 1;
@@ -104,7 +104,7 @@ bool Pawn::isValidMove(Tile *temp) const
 
             if ((tile[row][col + 1]->pieceName == 'P' && tile[row][col + 1]->pieceColor == 0) && tile[row][col]->row == 3 && path_len(b_move_list.at(b_move_list.size() - 1)) == 2 && b_move_list.at(b_move_list.size() - 1).at(0) == 'P')
             {
-                qDebug() << b_move_list.at(b_move_list.size() - 1) << endl;
+               // qDebug() <<"black sol anapasan move : "<< b_move_list.at(b_move_list.size() - 1) << endl;
                 exp[max++] = tile[row - 1][col + 1]->tileNum;
                 is_w2_anpasan = col + 1;
                 retVal = 1;
@@ -156,11 +156,11 @@ bool Pawn::isValidMove(Tile *temp) const
         { //black orib move anpasan
             if ((tile[row][col - 1]->pieceName == 'P' && tile[row][col - 1]->pieceColor == 1) && tile[row][col]->row == 4 && path_len(w_move_list.at(w_move_list.size() - 1)) == 2 && w_move_list.at(w_move_list.size() - 1).at(0) == 'P')
             {
-                qDebug() << w_move_list.at(w_move_list.size() - 1) << endl;
-                //exp[max++] = tile[row + 1][col - 1]->tileNum;
-                exp[max++] = tile[row + 1][col + 1]->tileNum;
-                //is_b1_anpasan = col - 1;
-                is_b1_anpasan = col + 1;
+               // qDebug() << w_move_list.at(w_move_list.size() - 1) << endl;
+
+                exp[max++] = tile[row + 1][col - 1]->tileNum;
+
+                is_b1_anpasan = col - 1;
                 retVal = 1;
             }
         }
@@ -169,11 +169,11 @@ bool Pawn::isValidMove(Tile *temp) const
         { //black orib move anpasan
             if ((tile[row][col + 1]->pieceName == 'P' && tile[row][col + 1]->pieceColor == 1) && tile[row][col]->row == 4 && path_len(w_move_list.at(w_move_list.size() - 1)) == 2 && w_move_list.at(w_move_list.size() - 1).at(0) == 'P')
             {
-                qDebug() << w_move_list.at(w_move_list.size() - 1) << endl;
-                //exp[max++] = tile[row + 1][col + 1]->tileNum;
-                exp[max++] = tile[row + 1][col - 1]->tileNum;
-                // is_b2_anpasan = col + 1;
-                is_b2_anpasan = col - 1;
+               // qDebug() <<"white sol anapasan move :"<<w_move_list.at(w_move_list.size() - 1) << endl;
+
+                exp[max++] = tile[row +1][col + 1]->tileNum;
+
+                is_b2_anpasan = col + 1;
                 retVal = 1;
             }
         }

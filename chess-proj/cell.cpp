@@ -244,7 +244,7 @@ void validate(Tile *temp, int c)
             exp[max++] = temp->tileNum;
             retValue = valid->chooser(temp);
 
-            if ( king_at_check==1 && last_t == turn)
+            if ( king_at_check==1 && last_t != turn)
             {
                 qDebug()<<(temp->pieceColor == 0 ? "white KING checked" : "black KING checked")<<endl;
             }

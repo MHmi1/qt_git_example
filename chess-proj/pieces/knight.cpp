@@ -47,7 +47,7 @@ bool Knight::isValidMove(Tile * temp) const
 
     if (r - 2 >= 0 && c - 1 >= 0)
     {
-        if ((tile[r - 2][c - 1]->pieceColor != temp->pieceColor || !tile[r - 2][c - 1]->piece) /*  */)
+        if ((tile[r - 2][c - 1]->pieceColor != temp->pieceColor || !tile[r - 2][c - 1]->piece) )
         {
             exp[max++] = tile[r - 2][c - 1]->tileNum;
             retVal = 1;

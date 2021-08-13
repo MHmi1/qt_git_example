@@ -6,6 +6,7 @@ Rook::Rook(Color c) :Chessman(ROOK,c)
 {
 score = 8;
 }
+
 int rook_threats=0;
 void Rook::cal_threat(const Tile * foe) const
 {
@@ -50,7 +51,7 @@ bool Rook::isValidMove(Tile * temp) const
         while (r-- > 0 )
         {
             if (!tile[r][c]->piece)
-            {  //north movement
+            {  //south movement
                 exp[max++] = tile[r][c]->tileNum;
 
                 retVal = 1;
@@ -62,7 +63,11 @@ bool Rook::isValidMove(Tile * temp) const
 
             else if (tile[r][c]->pieceColor != temp->pieceColor )
             { //enemy in view of white peiece
+                if (tile[r][c]->pieceName != 'K')
+                {
                 exp[max++] = tile[r][c]->tileNum;
+                retVal = 1;
+                }
                  this->cal_threat(tile[r][c]);
                 retVal = 1;
                 break;
@@ -74,7 +79,7 @@ bool Rook::isValidMove(Tile * temp) const
         while (r++ < 7 )
         {
             if (!tile[r][c]->piece)
-            {  //south movment
+            {  //north movment
                 exp[max++] = tile[r][c]->tileNum;
 
                 retVal = 1;
@@ -85,9 +90,13 @@ bool Rook::isValidMove(Tile * temp) const
 
             else if (tile[r][c]->pieceColor != temp->pieceColor)
             { //enemy in view of black peiece
+                if (tile[r][c]->pieceName != 'K')
+                {
                 exp[max++] = tile[r][c]->tileNum;
-                 this->cal_threat(tile[r][c]);
                 retVal = 1;
+                }
+                 this->cal_threat(tile[r][c]);
+
                 break;
             }
         }
@@ -99,18 +108,20 @@ bool Rook::isValidMove(Tile * temp) const
             if (!tile[r][c]->piece )
             { //east movement
                 exp[max++] = tile[r][c]->tileNum;
-
                 retVal = 1;
             }
-
             else if (tile[r][c]->pieceColor == temp->pieceColor )
                 break;
 
             else if (tile[r][c]->pieceColor != temp->pieceColor)
-            {  //???
+            {  //****
+                if (tile[r][c]->pieceName != 'K')
+                {
                 exp[max++] = tile[r][c]->tileNum;
-                   this->cal_threat(tile[r][c]);
                 retVal = 1;
+                }
+                   this->cal_threat(tile[r][c]);
+
                 break;
             }
         }
@@ -130,10 +141,13 @@ bool Rook::isValidMove(Tile * temp) const
                 break;
 
             else if (tile[r][c]->pieceColor != temp->pieceColor )
-            {  //???
+            {  //****
+                if (tile[r][c]->pieceName != 'K')
+                {
                 exp[max++] = tile[r][c]->tileNum;
-                // this->cal_threat(tile[r][c]);
                 retVal = 1;
+                }
+                 this->cal_threat(tile[r][c]);
                 break;
             }
         }

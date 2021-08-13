@@ -46,7 +46,7 @@ bool Queen::isValidMove(Tile *temp) const
 
     r = temp->row;
     c = temp->col;
-    while (r-- > 0)
+    while (r-- > 0) //south  movement
     {
         if (!tile[r][c]->piece)
         {
@@ -59,16 +59,44 @@ bool Queen::isValidMove(Tile *temp) const
 
         else if (tile[r][c]->pieceColor != temp->pieceColor)
         {
-            exp[max++] = tile[r][c]->tileNum;
+            if (tile[r][c]->pieceName!='K')
+            {
+                retVal = 1;
+                exp[max++] = tile[r][c]->tileNum;
+            }
             this->cal_threat(tile[r][c]);
+
+            break;
+        }
+    }
+    r = temp->row;
+    c = temp->col;
+    while (r++ < 7) //north movement
+    {
+        if (!tile[r][c]->piece)
+        {
+            exp[max++] = tile[r][c]->tileNum;
             retVal = 1;
+        }
+
+        else if (tile[r][c]->pieceColor == temp->pieceColor)
+            break;
+
+        else if (tile[r][c]->pieceColor != temp->pieceColor)
+        {
+            if (tile[r][c]->pieceName!='K')
+            {
+                retVal = 1;
+                exp[max++] = tile[r][c]->tileNum;
+            }
+            this->cal_threat(tile[r][c]);            
             break;
         }
     }
 
     r = temp->row;
     c = temp->col;
-    while (r++ < 7)
+    while (c++ < 7) //east movement
     {
         if (!tile[r][c]->piece)
         {
@@ -81,16 +109,21 @@ bool Queen::isValidMove(Tile *temp) const
 
         else if (tile[r][c]->pieceColor != temp->pieceColor)
         {
-            exp[max++] = tile[r][c]->tileNum;
+            if (tile[r][c]->pieceName!='K')
+            {
+                retVal = 1;
+                exp[max++] = tile[r][c]->tileNum;
+            }
             this->cal_threat(tile[r][c]);
-            retVal = 1;
+
+
             break;
         }
     }
 
     r = temp->row;
     c = temp->col;
-    while (c++ < 7)
+    while (c-- > 0) //west movement
     {
         if (!tile[r][c]->piece)
         {
@@ -103,16 +136,22 @@ bool Queen::isValidMove(Tile *temp) const
 
         else if (tile[r][c]->pieceColor != temp->pieceColor)
         {
-            exp[max++] = tile[r][c]->tileNum;
+            if (tile[r][c]->pieceName!='K')
+            {
+                retVal = 1;
+                exp[max++] = tile[r][c]->tileNum;
+            }
+
             this->cal_threat(tile[r][c]);
-            retVal = 1;
+
+
             break;
         }
     }
 
     r = temp->row;
     c = temp->col;
-    while (c-- > 0)
+    while (r-- > 0 && c++ < 7) // south-east movement
     {
         if (!tile[r][c]->piece)
         {
@@ -125,17 +164,21 @@ bool Queen::isValidMove(Tile *temp) const
 
         else if (tile[r][c]->pieceColor != temp->pieceColor)
         {
-            exp[max++] = tile[r][c]->tileNum;
-
+            if (tile[r][c]->pieceName!='K')
+            {
+                retVal = 1;
+                exp[max++] = tile[r][c]->tileNum;
+            }
             this->cal_threat(tile[r][c]);
-            retVal = 1;
+
+
             break;
         }
     }
 
     r = temp->row;
     c = temp->col;
-    while (r-- > 0 && c++ < 7)
+    while (r-- > 0 && c-- > 0) // south-west movement
     {
         if (!tile[r][c]->piece)
         {
@@ -148,16 +191,22 @@ bool Queen::isValidMove(Tile *temp) const
 
         else if (tile[r][c]->pieceColor != temp->pieceColor)
         {
-            exp[max++] = tile[r][c]->tileNum;
+            if (tile[r][c]->pieceName!='K')
+            {
+                retVal = 1;
+                exp[max++] = tile[r][c]->tileNum;
+            }
             this->cal_threat(tile[r][c]);
-            retVal = 1;
+
+
+
             break;
         }
     }
 
     r = temp->row;
     c = temp->col;
-    while (r-- > 0 && c-- > 0)
+    while (r++ < 7 && c++ < 7) // north_east movement
     {
         if (!tile[r][c]->piece)
         {
@@ -170,16 +219,22 @@ bool Queen::isValidMove(Tile *temp) const
 
         else if (tile[r][c]->pieceColor != temp->pieceColor)
         {
-            exp[max++] = tile[r][c]->tileNum;
+            if (tile[r][c]->pieceName!='K')
+            {
+                retVal = 1;
+                exp[max++] = tile[r][c]->tileNum;
+            }
+
             this->cal_threat(tile[r][c]);
-            retVal = 1;
+
+
             break;
         }
     }
 
     r = temp->row;
     c = temp->col;
-    while (r++ < 7 && c++ < 7)
+    while (r++ < 7 && c-- > 0) // south-west movement
     {
         if (!tile[r][c]->piece)
         {
@@ -192,31 +247,13 @@ bool Queen::isValidMove(Tile *temp) const
 
         else if (tile[r][c]->pieceColor != temp->pieceColor)
         {
-            exp[max++] = tile[r][c]->tileNum;
-            this->cal_threat(tile[r][c]);
-            retVal = 1;
-            break;
-        }
-    }
+            if (tile[r][c]->pieceName!='K')
+            {
+                retVal = 1;
+                exp[max++] = tile[r][c]->tileNum;
+            }
 
-    r = temp->row;
-    c = temp->col;
-    while (r++ < 7 && c-- > 0)
-    {
-        if (!tile[r][c]->piece)
-        {
-            exp[max++] = tile[r][c]->tileNum;
-            retVal = 1;
-        }
-
-        else if (tile[r][c]->pieceColor == temp->pieceColor)
-            break;
-
-        else if (tile[r][c]->pieceColor != temp->pieceColor)
-        {
-            exp[max++] = tile[r][c]->tileNum;
-            this->cal_threat(tile[r][c]);
-            retVal = 1;
+            this->cal_threat(tile[r][c]);           
             break;
         }
     }

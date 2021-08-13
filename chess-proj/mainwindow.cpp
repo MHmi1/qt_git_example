@@ -165,17 +165,21 @@ void MainWindow::set_player_inf(QString a, QString b, QString c)
     int chance = QRandomGenerator::global()->bounded(0, 2);
     if (chance == 1)
     {
-        ui->p1_name->setText("<a href='www. '>" + a + "(white)" + "</a>");
-        ui->p2_name->setText("<a href='www. '>" + b + "(black)" + "</a>");
+        ui->p1_name->setText("<a href='www. '>" + a + " (BLACK)" + "</a>");
+        ui->p2_name->setText("<a href='www. '>" + b + " (WHITE)" + "</a>");
 
         watch->start();
     }
     else if (chance == 0)
     {
-        ui->p1_name->setText("<a href='www. '>" + a + "(white)" + "</a>");
-        ui->p2_name->setText("<a href='www. '>" + b + "(black)" + "</a>");
+        ui->p1_name->setText("<a href='www. '>" + a + " (BLACK)" + "</a>");
+        ui->p2_name->setText("<a href='www. '>" + b + " (WHITE)" + "</a>");
         watch->start();
     }
+
+    QSqlQuery q;
+    q.exec("DELETE FROM player_score");
+    q.exec("INSERT INTO player_score (id,p2_negative,p1_negative,p2_positive,p1_positive)VALUES(1,0,0,0,0)");
 
     ui->redo_btn->setEnabled(1);
     ui->double_btn->setEnabled(1);
@@ -299,6 +303,9 @@ void MainWindow::on_double_btn_clicked()
 void MainWindow::on_undo_btn_clicked() // this function operation based on  check castling is active or not !
 {
 
+
+
+
     if (turn == 1 && b_move_list.size() > 0)
     {
         if (is_castling_act == 0)
@@ -316,6 +323,7 @@ void MainWindow::on_undo_btn_clicked() // this function operation based on  chec
             // ui->p2_negative->setText(QString::number(a));
             w_score_update(-5);
             turn = 0;
+
 
         }
 
@@ -346,6 +354,7 @@ void MainWindow::on_undo_btn_clicked() // this function operation based on  chec
             w_score_update(-5);
             turn = 0;
 
+
         }
     }
     else if (turn == 0 && w_move_list.size() > 0)
@@ -365,6 +374,7 @@ void MainWindow::on_undo_btn_clicked() // this function operation based on  chec
             // ui->p1_negative->setText(QString::number(a));
             b_score_update(-5);
             turn = 1;
+
 
         }
 
@@ -397,8 +407,10 @@ void MainWindow::on_undo_btn_clicked() // this function operation based on  chec
             //ui->p1_negative->setText(QString::number(a));
             b_score_update(-5);
             turn = 1;
+
         }
     }
+
 }
 
 void MainWindow::on_b_lost_label_linkHovered(const QString &link)
