@@ -45,31 +45,6 @@ void Chessman::setType(Type type)
     Chessman::type = type;
 }
 
-/*
-char Chessman::typeToChar(Type type) const
-{
-    switch(type)
-    {
-        case PAWN: return 'P';
-        case KNIGHT: return 'N';
-        case BISHOP: return 'B';
-        case ROOK: return 'R';
-        case QUEEN: return 'Q';
-        case KING: return 'K';
-        default: return ' ';
-    }
-}
-
-char Chessman::colorToChar(Color color) const
-{
-    switch(color)
-    {
-        case WHITE: return 'W';
-        case BLACK: return 'B';
-        default: return ' ';
-    }
-}
-*/
 
  void Chessman::set_image(QString)
  {

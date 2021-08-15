@@ -2,7 +2,7 @@
 #define ROOK_H
 #include "Piece.h"
 
-class Rook : public Chessman
+class Rook : public Chessman  //inherited form chessman
 {
 public:
     Rook(Color);

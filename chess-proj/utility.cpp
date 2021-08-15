@@ -2,7 +2,8 @@
 #include <QApplication>
 //This file is a place to write useful functions
 #include <QTableWidget>
-void delay( int millisecondsToWait )
+
+void delay( long long int millisecondsToWait )
 {
     QTime dieTime = QTime::currentTime().addMSecs( millisecondsToWait );
     while( QTime::currentTime() < dieTime )
@@ -40,8 +41,14 @@ double SqrtNumber(double num)  //function for calculate square root of number
         return temp;
  }
 
-std::map<int, int> change_coord(QString coord)
+std::map<int, int> change_coord(QString coord) //std::map<int, int> change_coord(QString coord); change chess coordination to x,y(or row,col)
 {
+   /* if (coord.at(0)!='a' || coord.at(0)!='b' || coord.at(0)!='c' || coord.at(0)!='d' || coord.at(0)!='e' || coord.at(0)!='f' || coord.at(0)!='g' ||coord.at(0)!='h')
+    {
+        throw  std::invalid_argument("Error ! for changing coord you must use a-g and 1-8 !! ");
+    }
+*/
+
     int ch;
 
     switch (coord.toStdString().at(0))
@@ -95,7 +102,7 @@ std::map<int, int> change_coord(QString coord)
     break;
     }
     char y2 = (coord.toStdString().at(1));
-    int y = y2 - '0';
+    int y = y2 - '0'; //trick for convert char to int
     std::map<int, int> arr{{8 - y, ch}};
     return arr;
 }

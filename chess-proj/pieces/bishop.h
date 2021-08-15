@@ -2,7 +2,7 @@
 #define BISHOP_H
 #include "Piece.h"
 #include "cell.h"
-class Bishop : public Chessman
+class Bishop : public Chessman //inherited form chessman
 {
 public:
     Bishop(Color);

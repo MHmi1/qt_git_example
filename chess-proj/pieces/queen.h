@@ -2,7 +2,7 @@
 #define QUEEN_H
 #include "Piece.h"
 
-class Queen : public Chessman
+class Queen : public Chessman //inherited form chessman
 {
     public:
     Queen(Color);

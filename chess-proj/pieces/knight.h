@@ -2,7 +2,7 @@
 #define KNIGHT_H
 #include "Piece.h"
 
-class Knight : public Chessman
+class Knight : public Chessman //inherited form chessman
 {
 public:
     Knight(Color);

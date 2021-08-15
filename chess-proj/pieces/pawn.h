@@ -2,7 +2,7 @@
 #define PAWN_H
 #include "Piece.h"
 
-class Pawn : public Chessman
+class Pawn : public Chessman //inherited form chessman
 {
 public:
     Pawn(Color);

@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-
 #include <QApplication>
 #include <QGridLayout>
 #include "cell.h"
@@ -11,12 +10,14 @@
 #include <QDir>
 
 extern bool is_reveiw_act;
-extern void delay(int millisecondsToWait);
+extern void delay(long long int millisecondsToWait);
 extern void del_piece(Tile *temp);
-int count = 0, turn = 1, exp[60], max = 0;
+
 int wR, wC, bR, bC;
 Tile *click1;
+int count = 0, turn = 1, exp[60], max = 0;
 Tile *tile[8][8] = {{NULL}};
+
 extern std::map<int, int> change_coord(QString coord);
 extern QVector<QString> b_move_list;
 extern QVector<QString> w_move_list;
@@ -88,7 +89,7 @@ void chessBoard(QWidget *baseWidget, Tile *tile[8][8])
         tile[6][j]->display('P');
     }
 
-    //white and black remaining elements
+    //white and black remaining elements set
     for (j = 0; j < 8; j++)
     {
         tile[0][j]->piece = 1;
@@ -181,7 +182,7 @@ void accessories(bool flag, QWidget *baseWidget, QString w_player = "null", QStr
 
     if (flag == 0)
     {
-        txt->setGeometry(1000, 105, 250, 550);
+        txt->setGeometry(960, 105, 250, 280);
         txt->setStyleSheet("QLabel {background-color: gray;}");
         txt->setDisabled(1);
         txt->show();
@@ -249,6 +250,7 @@ int main(int argc, char *argv[])
     //qDebug()<<endl<<dir.absolutePath()<<endl;
 
     w.show();
+
     return a.exec();
 }
 
@@ -332,17 +334,29 @@ void continue_game(QString moves)
     chessBoard(myWidget, tile);
     myWidget->show();
 
-    /*
+    QString w_moves,b_moves;
         for (int k=0;k<w.size();k++)
         {
-            qDebug()<<QString::fromStdString(w.at(k))<<endl;
+            w_moves += QString::number(k+1)+" - "+QString::fromStdString(w.at(k)) +" \n ";
         }
-         qDebug()<<"----------------------------------"<<endl;
+
         for (int k=0;k<b.size();k++)
         {
-            qDebug()<<QString::fromStdString(b.at(k))<<endl;
+           b_moves += QString::number(k+1)+" - "+QString::fromStdString(b.at(k))+" \n ";
         }
-        */
+
+
+    QTextEdit *txt = new QTextEdit(myWidget);
+    txt->setGeometry(960,400,250,250);
+
+
+    txt->append("<b><p> Review textual Last game(not graphical) :  </p></b>");
+    txt->append("<b><p> White player moves :  </p></b>");
+    txt->append(w_moves);
+    txt->append("<b><p> black player moves :  </p></b>");
+    txt->append(b_moves);
+
+    txt->show();
 
     delay(2000);
 
@@ -396,10 +410,7 @@ void continue_game(QString moves)
     if (is_reveiw_act == 1)
     {
 
-        QTextEdit *txt = new QTextEdit();
-        txt->append("<b><p> Review textual Last game(not graphical) :  </p></b>");
-
-        delay(4000);
+        delay(8000);
         myWidget->close();
         exit(0);
     }

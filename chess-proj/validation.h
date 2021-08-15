@@ -14,18 +14,13 @@ extern int exp[60],max,wR,wC;
 
 class validation
 {
+    friend void validate(Tile *temp, int c);
     int flag,retVal;
 
 public:
     validation();
     int chooser(Tile *temp);
-    int validateBishop(Tile *temp);
-    int validateQueen(Tile *temp);
-    int validateKing(Tile *temp);
-    int validateHorse(Tile *temp);
-    int validateRook(Tile *temp);
-    int validatePawn(Tile *temp);
-    void orange();
+    void orange(); //coloring tile of possible move
     int check(Tile *temp);
 };
 

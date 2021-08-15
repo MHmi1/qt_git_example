@@ -61,7 +61,7 @@ int validation::check(Tile *temp)
     return retVal;
 }
 
-void validation::orange()
+void validation::orange() //Paint possible moves of each peice
 {
     int i, n;
 

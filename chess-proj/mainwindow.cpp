@@ -17,10 +17,13 @@
 #include <string>
 #include <QVector>
 #include <QStandardItemModel>
+#include <QMediaPlayer>
 
+
+extern void delay(long long int);
 extern void b_score_update(int num);
 extern void w_score_update(int num);
-
+extern bool is_draw();
 extern void continue_game(QString moves);
 extern bool is_soldier_end;
 extern std::vector<char> lost_white;
@@ -37,11 +40,13 @@ extern void game_start_end(int flag);
 extern int turn;
 extern void del_piece(Tile *temp);
 bool is_reveiw_act = 0;
+bool is_w_rand;
+bool is_b_rand;
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), watch(new Stopwatch())
 {
-
     ui->setupUi(this);
 
     setStyleSheet("background-color:#dadada;");
@@ -165,9 +170,9 @@ void MainWindow::set_player_inf(QString a, QString b, QString c)
     int chance = QRandomGenerator::global()->bounded(0, 2);
     if (chance == 1)
     {
+
         ui->p1_name->setText("<a href='www. '>" + a + " (BLACK)" + "</a>");
         ui->p2_name->setText("<a href='www. '>" + b + " (WHITE)" + "</a>");
-
         watch->start();
     }
     else if (chance == 0)
@@ -191,12 +196,15 @@ void MainWindow::set_player_inf(QString a, QString b, QString c)
     ui->view_last_btn->close();
     ui->view_last_btn->setEnabled(0);
     turn = 1;
+    ui->comboBox_b->clear();
+    ui->comboBox_w->clear();
 }
 
 void MainWindow::on_actionAbout_us_triggered()
 {
     QMessageBox msgBox;
-    msgBox.setText("<b><p> Welcome to ' Advanced Chess game ' Ver BETA </p><p>  Designers & Programers : </p><p>  + Ali Hemati  </p>+Mohsen Hami </b>");
+    // msgBox.setText();
+    msgBox.setInformativeText("<b><p> Welcome to ' Advanced Chess game ' Ver BETA </p><p>  Designers & Programers : </p><p> <a href='https://github.com/NeverSayNeveriinon'> + Ali Hemmati  </a></p><a href='https://github.com/deathofbutterfly'>+Mohsen Hami </a></b> <p><a href='https://github.com/deathofbutterfly/qt_git_example'>  Project Github link </p></a> ");
     msgBox.exec();
 }
 
@@ -272,9 +280,7 @@ void MainWindow::update()
         }
     }
 }
-
 //---------------------------------------
-
 void MainWindow::on_dispen_btn_clicked()
 {
     // int total_p1 = ui->p1_positive->text().toInt() +  ui->p1_negative->text().toInt();
@@ -285,27 +291,36 @@ void MainWindow::on_dispen_btn_clicked()
 
 void MainWindow::on_double_btn_clicked()
 {
-    is_dual_avctive = 1;
-    if (turn == 0)
+    static bool last_turn = 0;
+    int cnt = 0;
+    ui->double_btn->setEnabled(0);
+    if (turn != last_turn || cnt == 0)
     {
-        int a = ui->p2_negative->text().toInt() - 20;
-        //ui->p2_negative->setText(QString::number(a));
-        w_score_update(-20);
-    }
-    if (turn == 1)
-    {
-        int a = ui->p1_negative->text().toInt() - 20;
-        // ui->p1_negative->setText(QString::number(a));
-        b_score_update(-20);
+
+        is_dual_avctive = 1;
+        if (turn == 0)
+        {
+            ui->double_btn->setEnabled(1);
+            int a = ui->p2_negative->text().toInt() - 20;
+            //ui->p2_negative->setText(QString::number(a));
+            w_score_update(-20);
+            cnt++;
+            last_turn = 0;
+        }
+        if (turn == 1)
+        {
+            ui->double_btn->setEnabled(1);
+            int a = ui->p1_negative->text().toInt() - 20;
+            // ui->p1_negative->setText(QString::number(a));
+            b_score_update(-20);
+            cnt++;
+            last_turn = 1;
+        }
     }
 }
 
 void MainWindow::on_undo_btn_clicked() // this function operation based on  check castling is active or not !
 {
-
-
-
-
     if (turn == 1 && b_move_list.size() > 0)
     {
         if (is_castling_act == 0)
@@ -323,8 +338,6 @@ void MainWindow::on_undo_btn_clicked() // this function operation based on  chec
             // ui->p2_negative->setText(QString::number(a));
             w_score_update(-5);
             turn = 0;
-
-
         }
 
         else if (is_castling_act == 1 && b_move_list.size() > 1)
@@ -353,8 +366,6 @@ void MainWindow::on_undo_btn_clicked() // this function operation based on  chec
             // ui->p2_negative->setText(QString::number(a));
             w_score_update(-5);
             turn = 0;
-
-
         }
     }
     else if (turn == 0 && w_move_list.size() > 0)
@@ -374,8 +385,6 @@ void MainWindow::on_undo_btn_clicked() // this function operation based on  chec
             // ui->p1_negative->setText(QString::number(a));
             b_score_update(-5);
             turn = 1;
-
-
         }
 
         else if (is_castling_act == 1 && w_move_list.size() > 0)
@@ -407,10 +416,8 @@ void MainWindow::on_undo_btn_clicked() // this function operation based on  chec
             //ui->p1_negative->setText(QString::number(a));
             b_score_update(-5);
             turn = 1;
-
         }
     }
-
 }
 
 void MainWindow::on_b_lost_label_linkHovered(const QString &link)
@@ -517,6 +524,10 @@ void MainWindow::on_comboBox_b_activated(int index)
             tile[ite->first][ite->second]->display(ui->comboBox_b->itemText(index).toStdString().at(0));
             QString mov = ui->comboBox_b->itemText(index).toStdString().at(0) + QString::fromStdString(b_move_list.at(b_move_list.size() - 1).toStdString().substr(3, 2) + b_move_list.at(b_move_list.size() - 1).toStdString().substr(3, 2));
             b_move_list.push_back(mov);
+            QMediaPlayer *music = new QMediaPlayer();
+            music->setMedia(QUrl("qrc:/utility/honor.mp3"));
+            music->setVolume(85);
+            music->play();
         }
     }
     is_soldier_end = 0;
@@ -549,6 +560,10 @@ void MainWindow::on_comboBox_w_activated(int index)
 
             QString mov1 = ui->comboBox_w->itemText(index).toStdString().at(0) + QString::fromStdString(w_move_list.at(w_move_list.size() - 1).toStdString().substr(3, 2) + w_move_list.at(w_move_list.size() - 1).toStdString().substr(3, 2));
             w_move_list.push_back(mov1);
+            QMediaPlayer *music = new QMediaPlayer();
+            music->setMedia(QUrl("qrc:/utility/honor.mp3"));
+            music->setVolume(85);
+            music->play();
         }
     }
     is_soldier_end = 0;
@@ -584,7 +599,7 @@ void MainWindow::on_save_btn_clicked()
         b_mov += 'B' + b_move_list.at(i) + "-";
     }
 
-    QString text = w_mov + '#' + b_mov + '*' + ui->p1_name->text() + '-' + ui->p2_name->text() + '-' + ui->game_label2->text();
+    QString text = w_mov + '#' + b_mov + '*' + ui->p1_name->text() + '-' + ui->p2_name->text() + '-' + ui->game_label2->text() + '%' + QString::number(ui->minutesText->toPlainText().toInt() * 60 + ui->secondsText->toPlainText().toInt());
     out << text;
     file.close();
 }
@@ -702,6 +717,17 @@ void MainWindow::on_p1_name_linkHovered(const QString &link)
     }
     ui->p1_positive->setText(pos);
     ui->p1_negative->setText(neg);
+
+
+    if (neg <= 15)
+    {
+        is_b_rand = 1;
+        QString str1 = "UPDATE player_score SET p1_negative = p1_negative" + QString::number(+15) + " WHERE ID = 1;";
+        QMessageBox *msg = new QMessageBox();
+        msg->setInformativeText("Due to exceeding the limit of negative points ,a random move will be made for the black Player !!");
+        msg->show();
+        q.exec(str1);
+    }
     QSqlQueryModel *m = new QSqlQueryModel;
     m->setQuery(q);
 }
@@ -719,6 +745,17 @@ void MainWindow::on_p2_name_linkHovered(const QString &link)
     }
     ui->p2_positive->setText(pos);
     ui->p2_negative->setText(neg);
+
+    if (neg <= 15)
+    {
+        is_w_rand = 1;
+        QString str1 = "UPDATE player_score SET p2_negative = p2_negative" + QString::number(+15) + " WHERE ID = 1;";
+        QMessageBox *msg = new QMessageBox();
+        msg->setInformativeText("Due to exceeding the limit of negative points ,a random move will be made for the white Player !!");
+        msg->show();
+        q.exec(str1);
+    }
+
     QSqlQueryModel *m = new QSqlQueryModel;
     m->setQuery(q);
 }

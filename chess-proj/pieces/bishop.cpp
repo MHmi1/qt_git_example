@@ -10,7 +10,6 @@ int bishop_threats=0;
 
 void Bishop::cal_threat(const Tile * foe) const
 {
-
     qDebug()<<"in Bishop::cal_threat "<<endl;
     if  (foe->pieceName == 'Q')
     {

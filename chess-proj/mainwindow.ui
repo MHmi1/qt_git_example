@@ -689,7 +689,7 @@ height:25px;
 </string>
        </property>
        <property name="text">
-        <string>save</string>
+        <string>save Game</string>
        </property>
       </widget>
      </item>

@@ -28,5 +28,6 @@
         <file>Error.wav</file>
         <file>hit.wav</file>
         <file>board.png</file>
+        <file>honor.mp3</file>
     </qresource>
 </RCC>
