@@ -34,7 +34,6 @@ int validation::chooser(Tile *temp)
         flag = k->isValidMove(temp);
         break;
     }
-
     case 'Q':
     {
        std::unique_ptr<Queen> q (new Queen(BLACK));
@@ -57,7 +56,6 @@ int validation::check(Tile *temp)
 {
     int r, c, flag;
     retVal = 0;
-
     return retVal;
 }
 

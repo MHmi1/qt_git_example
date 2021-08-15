@@ -572,21 +572,17 @@ void MainWindow::on_comboBox_w_activated(int index)
 
 void MainWindow::on_save_btn_clicked()
 {
-
     QString fileName;
     fileName = "<" + ui->p1_name->text() + ">-<" + ui->p2_name->text() + ">-<" + ui->game_label2->text() + ">.acd";
     fileName = QFileDialog::getSaveFileName(this,
                                             tr("Save Advanced Chess game"), "",
                                             tr("chess game (*.acd);;All Files (*)"));
-
     QFile file(fileName);
-
     if (!file.open(QIODevice::WriteOnly | QFile::Text))
     {
         QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
         return;
     }
-
     setWindowTitle(fileName);
     QString w_mov, b_mov;
     QTextStream out(&file);
@@ -598,8 +594,7 @@ void MainWindow::on_save_btn_clicked()
     {
         b_mov += 'B' + b_move_list.at(i) + "-";
     }
-
-    QString text = w_mov + '#' + b_mov + '*' + ui->p1_name->text() + '-' + ui->p2_name->text() + '-' + ui->game_label2->text() + '%' + QString::number(ui->minutesText->toPlainText().toInt() * 60 + ui->secondsText->toPlainText().toInt());
+    QString text = w_mov + '#' + b_mov + '*' + ui->p1_name->text() + '-' + ui->p2_name->text() + '-' + ui->game_label2->text() ;
     out << text;
     file.close();
 }

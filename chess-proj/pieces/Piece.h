@@ -41,3 +41,4 @@ protected:
     int moves;
 };
 #endif // PIECE_H
+

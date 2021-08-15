@@ -54,7 +54,6 @@ int choose_cnt = 0;					 // counter for counting clicks
 bool king_at_check = 0;              //The flag of the is king at check !
 //------------------------------------------------------
 
-
 void w_score_update(int num) //update white - or + score at database
 {
     QSqlQuery q;
@@ -113,9 +112,8 @@ size_t path_len(QString move)
 
     int y = p2->second - p1->second;
     p2->second >= p1->second ? y = p2->second - p1->second : y = p1->second - p2->second;
-    //  qDebug()<<move << " : SqrtNumber((x * x) + (y * y)) :  "<<SqrtNumber((x * x) + (y * y))<<endl;
-    size_t len = SqrtNumber((x * x) + (y * y));
 
+    size_t len = SqrtNumber((x * x) + (y * y));
     return len;
 }
 
@@ -136,7 +134,7 @@ void Tile::display(char elem) //display all & one peice
 {
     this->pieceName = elem;
 
-    if (this->pieceColor && this->piece)
+    if (this->pieceColor && this->piece) //seting image for white peice
     {
         switch (elem)
         {
@@ -184,7 +182,7 @@ void Tile::display(char elem) //display all & one peice
         }
     }
 
-    else if (this->piece)
+    else if (this->piece) //seting image for black peice
     {
         switch (elem)
         {
@@ -234,6 +232,7 @@ void Tile::display(char elem) //display all & one peice
     else
         this->clear();
 }
+
 static bool last_t; //an static flag to store last turns
 
 void validate(Tile *temp, int c)
@@ -251,14 +250,16 @@ void validate(Tile *temp, int c)
             if (king_at_check == 1 && last_t != turn) //------check
             {
                 qDebug() << (temp->pieceColor == 0 ? "white KING checked" : "black KING checked") << endl;
+                if (temp->pieceColor == 0) {b_score_update(10);}
+                else if (temp->pieceColor != 0) { w_score_update(10);}
             }
+             king_at_check=0;
 
             if (retValue == 1)
             {
                 click1 = new Tile();
 
                 temp->setStyleSheet("QLabel {background-color: #0bc51d;}"); //green
-
                 click1 = temp;
                 choose_cnt++;
             }
@@ -270,11 +271,10 @@ void validate(Tile *temp, int c)
         }
         else
         {
-            //qDebug()<<" clicking anywhere .";
+            //qDebug()<<" impossible clicking  .";
             count = 0;
         }
     }
-
     else
     {
         if (temp->tileNum == click1->tileNum)
@@ -330,18 +330,6 @@ void validate(Tile *temp, int c)
                 disOrange();
 
                 max = 0;
-
-                /*
-                 qDebug()<< "len : " << path_len("-e4d3")<<endl;
-                  qDebug()<< "len : " << path_len("-e4e3")<<endl;//
-                   qDebug()<< "len : " << path_len("-e4f3")<<endl;
-                    qDebug()<< "len : " << path_len("-e4d4")<<endl;//
-                     qDebug()<< "len : " << path_len("-e4f4")<<endl;//
-                      qDebug()<< "len : " << path_len("-e4d5")<<endl;
-                       qDebug()<< "len : " << path_len("-e4e5")<<endl;//
-                         qDebug()<< "len : " << path_len("-e4f5")<<endl;
-                          qDebug()<< "len : " << path_len("-e4e4")<<endl;
-                          */
 
                 soldier_sec_half(temp);
                 end_soldier(temp);
@@ -448,8 +436,7 @@ void validate(Tile *temp, int c)
                         total_threat += king_threats;
                     }
 
-                    // wscore[0]=total_threat;
-                    //wscore[1]=0;
+                   
                     qDebug() << total_threat << "total scores for threating white palyer !!" << endl;
                     w_score_update(total_threat);
                     king_threats = 0;
@@ -496,18 +483,6 @@ void validate(Tile *temp, int c)
                 music->setVolume(85);
                 music->play();
 
-                // qDebug() << " queen_threats :" << queen_threats << endl;
-                //qDebug() << " bishop_threats :" << bishop_threats << endl;
-                // qDebug() << " rook_threats :" << rook_threats << endl;
-                // qDebug() << " knight_threats :" << knight_threats << endl;
-                // qDebug() << " pawn_threats :" << pawn_threats << endl;
-                // qDebug() << " king_threats :" << king_threats << endl;
-                // qDebug() <<" QString black_rand_move()"<< black_rand_move()<<endl;
-                //auto ite=  change_coord(QString::fromStdString(black_rand_move().toStdString().substr(1,2))).begin();
-
-                //validate((tile[ite->first][ite->second]),1);
-                //int poss=valid->chooser(tile[ite->first][ite->second]);
-                // qDebug() <<poss<<endl;
                 if (is_dual_avctive == 1)
                 {
 
@@ -531,7 +506,6 @@ void validate(Tile *temp, int c)
 
 void Tile::tileDisplay()
 {
-
     if (this->tileColor)
         this->setStyleSheet("QLabel {background-color: rgb(172, 110, 80);}:hover{background-color: rgb(86,175,185);}");
     else
@@ -882,8 +856,6 @@ bool hit_foe(const Tile *temp) // register score to DB  for atacking
                 qDebug()<<"possible " << possible_move.at(i)<<endl;
 
             }
-
-
                 std::sort(possible_move.begin(), possible_move.end());
                   possible_move.erase(std::unique(possible_move.begin(), possible_move.end()), possible_move.end());
 

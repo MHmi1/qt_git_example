@@ -22,7 +22,7 @@ public:
     //public Methods
     void mousePressEvent(QMouseEvent *event);
     void display(char elem); //fuction to show peice on the chess board
-    void tileDisplay();  //unselect a cell
+    void tileDisplay();  //show and paint  cells
     QString get_coord() const;
 };
 
