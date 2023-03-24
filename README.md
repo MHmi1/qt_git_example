@@ -4,9 +4,9 @@
 
 <p>Chess Board </P>
 
-<a href="https://s2.uupload.ir/files/chess_board_b2m5.png" target="_blank"><https://s2.uupload.ir/files/chess_board_b2m5.png" border="2" alt="آپلود عکس" /></a>
+<a href="https://s2.uupload.ir/files/chess_board_b2m5.png" target="_blank"><img width = "800" height = "500" src="https://s2.uupload.ir/files/chess_board_b2m5.png" border="2" alt="آپلود عکس" /></a>
 
 
 <p>Main Menu</P>
 
-<a href="https://s2.uupload.ir/files/main_menu_wfax.png" target="_blank"><img src="https://s2.uupload.ir/files/main_menu_wfax.png" border="2" alt="آپلود عکس" /></a>
+<a href="https://s2.uupload.ir/files/main_menu_wfax.png" target="_blank"><img width = "800" height = "500" src="https://s2.uupload.ir/files/main_menu_wfax.png" border="2" alt="آپلود عکس" /></a>
